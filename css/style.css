@@ -1,0 +1,39 @@
+.board {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (100px)[7];
+      grid-template-columns: repeat(7, 100px);
+  -ms-grid-rows: (100px)[7];
+      grid-template-rows: repeat(7, 100px);
+  grid-gap: 1px;
+  width: auto;
+}
+
+.board__road-field {
+  background-color: blue;
+  background-size: 100%;
+}
+
+.board__road-field:nth-child(1), .board__road-field:nth-child(7), .board__road-field:nth-child(43), .board__road-field:nth-child(49) {
+  background-image: url("../img/roadCorner.png");
+}
+
+.board__road-field:nth-child(14n+3), .board__road-field:nth-child(14n+5), .board__road-field:nth-child(15), .board__road-field:nth-child(21), .board__road-field:nth-child(29), .board__road-field:nth-child(35) {
+  background-image: url("../img/roadSplit.png");
+}
+
+.board__road-field:nth-child(1), .board__road-field:nth-child(31), .board__road-field:nth-child(47), .board__road-field:nth-child(45) {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.board__road-field:nth-child(7), .board__road-field:nth-child(15), .board__road-field:nth-child(17), .board__road-field:nth-child(29) {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
+
+.board__road-field:nth-child(21), .board__road-field:nth-child(33), .board__road-field:nth-child(35), .board__road-field:nth-child(43) {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+/*# sourceMappingURL=style.css.map */
