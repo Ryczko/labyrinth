@@ -1,4 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  position: relative;
+}
+
+.game {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translate(-50%, 5%);
+          transform: translate(-50%, 5%);
+}
+
 .board {
+  position: relative;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (100px)[7];
@@ -42,4 +61,4 @@
   height: 100px;
   background-color: green;
 }
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=index.css.map */
