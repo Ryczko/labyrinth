@@ -63,6 +63,12 @@
       ]
     },
     {
+      "uid": "a73c5deb486c8d66249811642e5d719a",
+      "css": "arrows-cw",
+      "code": 59392,
+      "src": "fontawesome"
+    },
+    {
       "uid": "760c52061675414536af37ad7e038159",
       "css": "fb",
       "code": 59413,

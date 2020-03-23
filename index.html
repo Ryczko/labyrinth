@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="scss/index.css">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="fontello/css/fontello.css">
 
     <title>Labyrinth</title>
 </head>
+
 <body>
     <div class="game">
         <div class="board-wrapper">
@@ -95,9 +97,13 @@
             </div>
         </div>
 
-        <div class="moving-field"></div>
+        <div class="moving-field">
+            <div class="moving-field__field"></div>
+            <div class="moving-field__arrow icon-arrows-cw"></div>
+        </div>
     </div>
 
     <script type="module" src="./js/index.js"></script>
 </body>
+
 </html>

@@ -3,12 +3,12 @@
 }
 
 .arrows-top {
-    animation: move-top 2s infinite;
+    animation: move-top 1s infinite alternate;
 }
 
 .arrows-bottom {
     bottom: 0;
-    animation: move-bottom 2s infinite;
+    animation: move-bottom 1s infinite alternate;
 }
 
 .arrows-right, .arrows-left {
@@ -16,12 +16,12 @@
 }
 
 .arrows-left {
-    animation: move-left 2s infinite;
+    animation: move-left 1s infinite alternate;
 }
 
 .arrows-right {
     right: 0;
-    animation: move-right 2s infinite;
+    animation: move-right 1s infinite alternate;
 }
 
 @keyframes move-top {
