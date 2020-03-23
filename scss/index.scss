@@ -1,5 +1,5 @@
 //Basic stuff
-@import './base/normalize', './base/mixins';
+@import './base/normalize', './base/variables', './base/mixins';
 
 //Components
-@import './components/board';
+@import './components/board', './components/movingField', './components/arrows';

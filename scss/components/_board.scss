@@ -1,8 +1,4 @@
 .board{
-    position: relative;
-
-    $road-field-size: 100px;
-
     display: grid;
     grid-template-columns: repeat(7, $road-field-size);
     grid-template-rows: repeat(7, $road-field-size);
@@ -29,11 +25,4 @@
             transform: rotate(90deg);
         }
     }
-}
-
-.moving-field{
-    margin-top: 25px;
-    width: 100px;
-    height: 100px;
-    background-color: green;
 }

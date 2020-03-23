@@ -1,0 +1,61 @@
+.arrows-top, .arrows-bottom {
+    @include arrow-column;
+}
+
+.arrows-top {
+    animation: move-top 2s infinite;
+}
+
+.arrows-bottom {
+    bottom: 0;
+    animation: move-bottom 2s infinite;
+}
+
+.arrows-right, .arrows-left {
+    @include arrow-row;
+}
+
+.arrows-left {
+    animation: move-left 2s infinite;
+}
+
+.arrows-right {
+    right: 0;
+    animation: move-right 2s infinite;
+}
+
+@keyframes move-top {
+    from {
+        transform: translateY(-30px);
+    }
+    to {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes move-bottom {
+    from {
+        transform: translateY(30px);
+    }
+    to {
+        transform: translateY(20px);
+    }
+}
+
+@keyframes move-left {
+    from {
+        transform: translateX(-30px);
+    }
+    to {
+        transform: translateX(-20px);
+    }
+}
+
+@keyframes move-right {
+    from {
+        transform: translateX(30px);
+    }
+    to {
+        transform: translateX(20px);
+    }
+}

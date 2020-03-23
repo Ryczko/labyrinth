@@ -1,0 +1,5 @@
+
+.icon-arrow-down:before { content: '\e810'; } /* '' */
+.icon-arrow-right:before { content: '\e811'; } /* '' */
+.icon-arrow-left:before { content: '\e812'; } /* '' */
+.icon-arrow-up:before { content: '\e81f'; } /* '' */
