@@ -2,10 +2,20 @@
     display: grid;
     grid-template-columns: repeat(7, $road-field-size);
     grid-template-rows: repeat(7, $road-field-size);
-    grid-gap: 1px;
+
+    // grid-gap: 1px;
+   
     
     &__road-field{
         background-size: 100% !important;
+        transition: left .5s,top .5s;
+        position: relative;
+        top:0;
+        left:0;
+
+        &.replace{
+            transition: 0;
+        }
 
         //start players position
         &:nth-child(1),&:nth-child(7),&:nth-child(43),&:nth-child(49){
@@ -29,4 +39,5 @@
             transform: rotate(90deg);
         }
     }
+
 }

@@ -2,8 +2,7 @@
     position: absolute;
 
     display: grid;
-    grid-template-columns: repeat(7, $road-field-size);    
-    grid-gap: 1px;
+    grid-template-columns: repeat(7, $road-field-size);        
     z-index: 100;
 
     & > i {

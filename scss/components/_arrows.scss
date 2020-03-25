@@ -1,9 +1,22 @@
+.board-arrows.unactive{
+    display: none;
+    width: $road-field-size;
+    height: $road-field-size;
+    color:rgba(255, 255, 255, 0);
+}
+
 .arrows-top, .arrows-bottom {
     @include arrow-column;
+    cursor: pointer;
+
+    &.unactive{
+        animation: 'none';
+    }
 }
 
 .arrows-top {
     animation: move-top 1s infinite alternate;
+    
 }
 
 .arrows-bottom {
@@ -13,6 +26,10 @@
 
 .arrows-right, .arrows-left {
     @include arrow-row;
+    cursor: pointer;
+    &.unactive{
+        animation: 'none';
+    }
 }
 
 .arrows-left {

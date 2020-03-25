@@ -11,7 +11,7 @@
         margin-top: 25px;
         width: $road-field-size;
         height: $road-field-size;
-        background-color: green;
+        border:1px solid black;
         transform: rotate(0deg);
     }
     &__arrow{
