@@ -45,7 +45,7 @@ class Board {
             }
         ];
 
-        playerStartPosition.forEach(el => el.style.backgroundImage = `url(../img/players/${el.dataset.player}.png), url(../img/roadSplit.png)`);
+        playerStartPosition.forEach(el => el.style.backgroundImage = `url(../img/players/${el.dataset.player}.png), url(../img/roadCorner.png)`);
 
         treasuresRoadFields.forEach(el => el.style.backgroundImage = `url(${el.dataset.item}), url(../img/roadSplit.png)`);
 
