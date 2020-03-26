@@ -9,7 +9,11 @@ class Put {
 
     slide = (e) => {
 
-        this.arrows.forEach(el => this.toggleArrowClasses(el))
+        this.arrows.forEach(el => {
+            this.toggleArrowClasses(el);
+            el.removeEventListener('click', this.slide)
+        })
+
 
         let info = {
             row: e.target.dataset.row,
@@ -42,9 +46,10 @@ class Put {
         const lastElement = [...line].filter(el => el.dataset[direction] == last);
         element.style.display = "block";
 
-        setTimeout(() => this.replace(element, this.movingField), 500)
-        setTimeout(() => this.replace(this.movingField, lastElement[0]), 750)
-        setTimeout(() => this.comeBack(element, line, lastElement[0], transformValue), 1000)
+        setTimeout(() => this.replace(element, this.movingField), 300)
+        setTimeout(() => this.replace(this.movingField, lastElement[0]), 600)
+
+        setTimeout(() => this.comeBack(element, line, lastElement[0], transformValue), 700)
     }
 
     comeBack = (element, line, last, transformValue) => {
@@ -61,19 +66,42 @@ class Put {
             el.style.left = `0px`;
         })
 
-        for (let i = line.length - 1; i > 0; i--) this.replace(line[i - 1], line[i]);
+
+        this.replaceAllLine(line)
 
         line.forEach(el => el.style.transition = 'left .5s,top .5s');
 
-        this.arrows.forEach(el => this.toggleArrowClasses(el));
+        this.arrows.forEach(el => {
+            this.toggleArrowClasses(el);
+            el.addEventListener('click', this.slide)
+        });
+
         element.style.display = '';
     }
 
-    refreshLine = (line, direction, row, col) => {
 
+    replaceAllLine(line) {
+        let info = [];
+
+        for (let i = 0; i < line.length; i++)info.push(this.getElementProperties(line[i]));
+
+        line.forEach(el => el.removeAttribute('data-item'));
+
+        for (let i = line.length - 1; i > 0; i--) {
+
+            line[i].style.background = info[i - 1][0];
+            line[i].style.transform = info[i - 1][1];
+            if (info[i - 1][2] != '') {
+                line[i].dataset.item = info[i - 1][2];
+            }
+        }
+
+        line[0].style.background = 'none'
+    }
+
+    refreshLine = (line, direction, row, col) => {
         let value = (col == 6 || row == 6) ? 1 : -1;
         line.forEach((el, index) => el.dataset[direction] = index + value);
-
     }
 
     toggleArrowClasses = (el) => {
@@ -83,15 +111,27 @@ class Put {
     }
 
     replace = (el1, el2) => {
-        const elementBackground1 = getComputedStyle(el1).getPropertyValue('background');
-        const elementBackground2 = getComputedStyle(el2).getPropertyValue('background');
-        const elementRotation1 = getComputedStyle(el1).getPropertyValue('transform');
-        const elementRotation2 = getComputedStyle(el2).getPropertyValue('transform');
 
-        el2.style.background = elementBackground1;
-        el1.style.background = elementBackground2;
-        el1.style.transform = elementRotation2;
-        el2.style.transform = elementRotation1;
+        const element1 = this.getElementProperties(el1);
+        const element2 = this.getElementProperties(el2);
+
+        el1.removeAttribute('data-item');
+        el2.removeAttribute('data-item');
+
+        el2.style.background = element1[0];
+        el1.style.background = element2[0];
+        el2.style.transform = element1[1];
+        el1.style.transform = element2[1];
+
+        if (element1[2] !== '') el2.dataset.item = element1[2];
+        if (element2[2] !== '') el1.dataset.item = element2[2];
+    }
+
+    getElementProperties = (el) => {
+        const background = getComputedStyle(el).getPropertyValue('background');
+        const rotation = getComputedStyle(el).getPropertyValue('transform');
+        const item = (el.hasAttribute('data-item')) ? el.dataset.item : '';
+        return [background, rotation, item]
     }
 }
 export default Put;
