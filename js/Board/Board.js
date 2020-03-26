@@ -26,10 +26,10 @@ class Board {
 
         const randomRoadFields = roadFields.filter(el => el.dataset.static == null);
         const treasuresRoadFields = roadFields.filter(el => el.dataset.item);
+        const playerStartPosition = roadFields.filter(el => el.dataset.player !== undefined);
 
         const rotationOptions = ['-90', '0', '90', '180'];
 
-        //random road fields (34)
         const optionArray = [
             {
                 type: 'roadCorner',
@@ -45,12 +45,7 @@ class Board {
             }
         ];
 
-        for (let i = 0; i < RandomTreasuresData.length; i++) {
-            const randomTreasure = randomNumber(RandomTreasuresData);
-            const randomField = randomNumber(randomRoadFields);
-
-            randomRoadFields[randomField].dataset.item = `../img/treasures/${RandomTreasuresData[randomTreasure].name}.png`;
-        }
+        playerStartPosition.forEach(el => el.style.backgroundImage = `url(../img/players/${el.dataset.player}.png), url(../img/roadSplit.png)`);
 
         treasuresRoadFields.forEach(el => el.style.backgroundImage = `url(${el.dataset.item}), url(../img/roadSplit.png)`);
 
@@ -64,6 +59,26 @@ class Board {
             const index = optionArray.map(el => el.type).indexOf(filtredOptionArray[randomIndex].type);
 
             optionArray[index].number--;
+
+            if (filtredOptionArray[randomIndex].type === 'roadCorner' || filtredOptionArray[randomIndex].type === 'roadSplit') {
+                if (RandomTreasuresData.length > 0) {
+                    if (filtredOptionArray[randomIndex].number > 6) {
+                        if (Math.floor(Math.random() * 2) === 0) {
+                            const randomTreasure = randomNumber(RandomTreasuresData);
+
+                            el.dataset.item = `../img/treasures/${RandomTreasuresData[randomTreasure].name}.png`;
+        
+                            RandomTreasuresData.splice(randomTreasure, 1);
+                        }
+                    } else {
+                        const randomTreasure = randomNumber(RandomTreasuresData);
+
+                        el.dataset.item = `../img/treasures/${RandomTreasuresData[randomTreasure].name}.png`;
+        
+                        RandomTreasuresData.splice(randomTreasure, 1);
+                    }
+                }
+            }
 
             if (el.dataset.item === undefined) el.style.background = `url(../img/${filtredOptionArray[randomIndex].type}.png)`;
             else el.style.background = `url(${el.dataset.item}), url(../img/${filtredOptionArray[randomIndex].type}.png)`;
