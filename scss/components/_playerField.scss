@@ -1,0 +1,68 @@
+
+.player{
+display: flex;
+margin: 70px 0;
+justify-content: space-around;
+
+
+
+    &__moving-field{
+        position: relative;
+        display: flex;
+        
+    
+        &__field{
+            background-size: 100%;
+        transition: .5s;
+            flex-basis: $road-field-size;
+            height: $road-field-size;
+            border:1px solid black;
+            transform: rotate(0deg);
+            width: $road-field-size;
+        }
+        &__arrow{
+            
+            text-align: center;
+            margin-left: 2px;
+            cursor: pointer;
+            height: 30px;
+            line-height: 30px;
+            background-color: rgb(207, 207, 207);
+           align-self: center;
+            width: 30px;
+        }
+    }
+
+    &__cards{
+        
+        
+        &__card{
+            position:absolute;
+            width: $road-field-size;
+            height: $road-field-size+20;
+            transition: .5s;
+            transform-style:preserve-3d;
+            
+    
+            &__front,&__back{
+                position: absolute;
+                width: $road-field-size;
+                height: $road-field-size+20;
+                background-position: center;
+                 border: 1px solid black;
+                 border-radius: 4px;
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+            
+            &__front{
+                background-color: rgb(87, 87, 87);
+               
+            }
+            &__back{
+                background-color: #DBBE8E;
+                transform: rotateY(180deg) translate(0, -10px);
+            }
+        }
+    }
+}

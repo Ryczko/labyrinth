@@ -2,7 +2,7 @@ class Put {
 
     constructor() {
         this.arrows = document.querySelectorAll('.board-arrows');
-        this.movingField = document.querySelector('.moving-field__field');
+        this.movingField = document.querySelector('.player__moving-field__field');
         this.size = this.movingField.offsetWidth;
         this.arrows.forEach(el => el.addEventListener('click', this.slide));
     }

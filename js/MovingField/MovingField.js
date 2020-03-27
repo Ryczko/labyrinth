@@ -3,8 +3,8 @@ class MovingField {
     constructor(type) {
         this.type = type;
         this.rotate = 0;
-        this.movingField = document.querySelector('.moving-field__field');
-        this.arrow = document.querySelector('.moving-field__arrow');
+        this.movingField = document.querySelector('.player__moving-field__field');
+        this.arrow = document.querySelector('.player__moving-field__arrow');
         this.addMovingField();
     }
 
