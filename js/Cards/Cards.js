@@ -14,8 +14,6 @@ export const createCards = (cards) => {
         cardFront.classList.add(cardFrontClass)
         const cardBack = document.createElement('div');
         cardBack.classList.add(cardBackClass);
-
-        cardBack.style.backgroundImage = `url(../img/treasures/${cards[i].name}.png)`;
         card.appendChild(cardFront);
         card.appendChild(cardBack);
 
@@ -24,6 +22,7 @@ export const createCards = (cards) => {
         if (i == cards.length - 1) {
             setTimeout(function () {
                 card.dataset.item = cards[i].name;
+                cardBack.style.backgroundImage = `url(../img/treasures/${cards[i].name}.png)`;
                 card.style.transform = `rotateY(180deg) translateX(${-1 * transformX * i}px)`
             }, 200)
         }

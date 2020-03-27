@@ -11,7 +11,8 @@ class Put {
 
         this.arrows.forEach(el => {
             this.toggleArrowClasses(el);
-            el.removeEventListener('click', this.slide)
+            el.removeEventListener('click', this.slide);
+            el.style.display = ""
         })
 
 
@@ -23,14 +24,21 @@ class Put {
             topOrLeft: 'left',
             transformValue: 1
         }
-        let { row, column, mainDirection, secondDirection, topOrLeft, transformValue } = info;
 
+        let { row, column, mainDirection, secondDirection, topOrLeft, transformValue } = info;
 
         if (row == 0 || row == 6) {
             mainDirection = "column";
             secondDirection = "row";
             topOrLeft = "top"
         }
+
+
+        const toBlock = (info[secondDirection] == 6) ? 0 : 6;
+        const blockArrow = document.querySelector(`.arrows [data-${secondDirection}="${toBlock}"][data-${mainDirection}="${info[mainDirection]}"]`)
+        blockArrow.style.display = 'none'
+
+
 
         if (column == 6 || row == 6) transformValue = -1;
 

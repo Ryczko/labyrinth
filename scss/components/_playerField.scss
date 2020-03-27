@@ -13,7 +13,7 @@ justify-content: space-around;
     
         &__field{
             background-size: 100%;
-        transition: .5s;
+            transition: .5s;
             flex-basis: $road-field-size;
             height: $road-field-size;
             border:1px solid black;
