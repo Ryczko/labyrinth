@@ -24,10 +24,10 @@ body {
 .board {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (80px)[7];
-      grid-template-columns: repeat(7, 80px);
-  -ms-grid-rows: (80px)[7];
-      grid-template-rows: repeat(7, 80px);
+  -ms-grid-columns: (90px)[7];
+      grid-template-columns: repeat(7, 90px);
+  -ms-grid-rows: (90px)[7];
+      grid-template-rows: repeat(7, 90px);
 }
 
 .board__road-field {
@@ -87,13 +87,13 @@ body {
   background-size: 100%;
   -webkit-transition: .5s;
   transition: .5s;
-  -ms-flex-preferred-size: 80px;
-      flex-basis: 80px;
-  height: 80px;
+  -ms-flex-preferred-size: 90px;
+      flex-basis: 90px;
+  height: 90px;
   border: 1px solid black;
   -webkit-transform: rotate(0deg);
           transform: rotate(0deg);
-  width: 80px;
+  width: 90px;
 }
 
 .player__moving-field__arrow {
@@ -111,8 +111,8 @@ body {
 
 .player__cards__card {
   position: absolute;
-  width: 80px;
-  height: 100px;
+  width: 90px;
+  height: 110px;
   -webkit-transition: .5s;
   transition: .5s;
   -webkit-transform-style: preserve-3d;
@@ -121,8 +121,8 @@ body {
 
 .player__cards__card__front, .player__cards__card__back {
   position: absolute;
-  width: 80px;
-  height: 100px;
+  width: 90px;
+  height: 110px;
   background-position: center;
   border: 1px solid black;
   border-radius: 4px;
@@ -142,8 +142,8 @@ body {
 
 .board-arrows.unactive {
   display: none;
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   color: rgba(255, 255, 255, 0);
 }
 
@@ -151,8 +151,8 @@ body {
   position: absolute;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (80px)[7];
-      grid-template-columns: repeat(7, 80px);
+  -ms-grid-columns: (90px)[7];
+      grid-template-columns: repeat(7, 90px);
   z-index: 100;
   cursor: pointer;
 }
@@ -201,8 +201,8 @@ body {
   position: absolute;
   display: -ms-grid;
   display: grid;
-  -ms-grid-rows: (80px)[7];
-      grid-template-rows: repeat(7, 80px);
+  -ms-grid-rows: (90px)[7];
+      grid-template-rows: repeat(7, 90px);
   z-index: 100;
   cursor: pointer;
 }

@@ -22,11 +22,10 @@ class Board {
     }
 
     buildNewBoard = roadFields => {
-        const { randomNumber } = this;
+        const { randomNumber, entryType } = this;
 
-        const randomRoadFields = roadFields.filter(el => el.dataset.static == null);
+        const randomRoadFields = roadFields.filter(el => el.dataset.static === undefined);
         const treasuresRoadFields = roadFields.filter(el => el.dataset.item);
-        const playerStartPosition = roadFields.filter(el => el.dataset.player !== undefined);
 
         const rotationOptions = ['-90', '0', '90', '180'];
 
@@ -45,45 +44,47 @@ class Board {
             }
         ];
 
-        playerStartPosition.forEach(el => el.style.backgroundImage = `url(../img/players/${el.dataset.player}.png), url(../img/roadCorner.png)`);
-
-        treasuresRoadFields.forEach(el => el.style.backgroundImage = `url(${el.dataset.item}), url(../img/roadSplit.png)`);
+        treasuresRoadFields.forEach(el => el.style.backgroundImage = `url(../img/treasures/${el.dataset.item}.png), url(../img/roadSplit.png)`);
 
         randomRoadFields.forEach(el => {
             const filtredOptionArray = optionArray.filter(el => el.number !== 0);
 
             const randomIndex = randomNumber(filtredOptionArray);
-
             const randomRotation = randomNumber(rotationOptions);
 
-            const index = optionArray.map(el => el.type).indexOf(filtredOptionArray[randomIndex].type);
+            const fieldType = filtredOptionArray[randomIndex].type;
+            const fieldRotation = rotationOptions[randomRotation];
+
+            const index = optionArray.map(el => el.type).indexOf(fieldType);
 
             optionArray[index].number--;
 
-            if (filtredOptionArray[randomIndex].type === 'roadCorner' || filtredOptionArray[randomIndex].type === 'roadSplit') {
+            if (fieldType === 'roadCorner' || fieldType === 'roadSplit') {
                 if (RandomTreasuresData.length > 0) {
                     if (filtredOptionArray[randomIndex].number > 6) {
                         if (Math.floor(Math.random() * 2) === 0) {
                             const randomTreasure = randomNumber(RandomTreasuresData);
 
-                            el.dataset.item = `../img/treasures/${RandomTreasuresData[randomTreasure].name}.png`;
+                            el.dataset.item = RandomTreasuresData[randomTreasure].name;
         
                             RandomTreasuresData.splice(randomTreasure, 1);
                         }
                     } else {
                         const randomTreasure = randomNumber(RandomTreasuresData);
 
-                        el.dataset.item = `../img/treasures/${RandomTreasuresData[randomTreasure].name}.png`;
+                        el.dataset.item = RandomTreasuresData[randomTreasure].name;
         
                         RandomTreasuresData.splice(randomTreasure, 1);
                     }
                 }
             }
 
-            if (el.dataset.item === undefined) el.style.background = `url(../img/${filtredOptionArray[randomIndex].type}.png)`;
-            else el.style.background = `url(${el.dataset.item}), url(../img/${filtredOptionArray[randomIndex].type}.png)`;
+            if (el.dataset.item === undefined) el.style.background = `url(../img/${fieldType}.png)`;
+            else el.style.background = `url(../img/treasures/${el.dataset.item}.png), url(../img/${fieldType}.png)`;
 
-            el.style.transform = `rotate(${rotationOptions[randomRotation]}deg)`;
+            el.style.transform = `rotate(${fieldRotation}deg)`;
+
+            el.dataset.entry = entryType(fieldType, fieldRotation);
         });
 
         const lastElement = optionArray.filter(el => el.number === 1)[0].type;
@@ -92,6 +93,25 @@ class Board {
     }
 
     randomNumber = range => Math.floor(Math.random() * range.length);
+
+    entryType = (type, rotation) => {
+        if (type === 'roadCorner') {
+            if (rotation === '-90') return 'bottom,left';
+            else if (rotation === '0') return 'top,left';
+            else if (rotation === '90') return 'top,right';
+            else if (rotation === '180') return 'right,bottom';
+        }
+        else if (type === 'roadEast') {
+            if (rotation === '-90' || rotation === '90') return 'top,bottom';
+            else if (rotation === '0' || rotation === '180') return 'right,left';
+        }
+        else if (type === 'roadSplit') {
+            if (rotation === '-90') return 'top,right,bottom';
+            else if (rotation === '0') return 'right,bottom,left';
+            else if (rotation === '90') return 'top,bottom,left';
+            else if (rotation === '180') return 'top,right,left';
+        }
+    }
 }
 
 export default Board;

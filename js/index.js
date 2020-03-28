@@ -6,4 +6,5 @@ import Start from "./Start/Start.js"
 const board = new Board();
 const put = new Put();
 
-const start = new Start(2);//ilosc graczy jako argument
+//argument = number of players
+const start = new Start(1);
