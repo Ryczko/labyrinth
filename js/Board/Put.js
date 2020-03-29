@@ -5,6 +5,7 @@ class Put {
         this.movingField = document.querySelector('.player__moving-field__field');
         this.size = this.movingField.offsetWidth;
         this.arrows.forEach(el => el.addEventListener('click', this.slide));
+
     }
 
     slide = (e) => {
@@ -54,10 +55,25 @@ class Put {
         const lastElement = [...line].filter(el => el.dataset[direction] == last);
         element.style.display = "block";
 
-        setTimeout(() => this.replace(element, this.movingField), 300)
-        setTimeout(() => this.replace(this.movingField, lastElement[0]), 600)
+        setTimeout(() => {
+            this.replace(element, this.movingField)
 
-        setTimeout(() => this.comeBack(element, line, lastElement[0], transformValue), 700)
+        }, 300)
+        setTimeout(() => {
+            const bgArray = lastElement[0].style.backgroundImage.split(',');
+            this.playersBg = bgArray.filter(el => el.includes('player'));
+            const othersBg = bgArray.filter(el => !el.includes('player'));
+
+            lastElement[0].style.backgroundImage = othersBg.join(',')
+            if (this.playersBg.length !== 0) this.playersData = lastElement[0].dataset.player;
+
+
+            this.replace(this.movingField, lastElement[0])
+
+
+        }, 600)
+
+        setTimeout(() => this.comeBack(element, line, lastElement[0], transformValue), 600)
     }
 
     comeBack = (element, line, last, transformValue) => {
@@ -84,9 +100,9 @@ class Put {
             el.addEventListener('click', this.slide)
         });
 
+        element.removeAttribute('data-entry')
         element.style.display = '';
     }
-
 
     replaceAllLine(line) {
         let info = [];
@@ -99,12 +115,23 @@ class Put {
 
             line[i].style.background = info[i - 1][0];
             line[i].style.transform = info[i - 1][1];
-            if (info[i - 1][2] != '') {
-                line[i].dataset.item = info[i - 1][2];
-            }
+            if (info[i - 1][2] != '') line[i].dataset.item = info[i - 1][2];
+            if (info[i - 1][3] != '') line[i].dataset.entry = info[i - 1][3];
+            if (info[i - 1][4] != '') line[i].dataset.player = info[i - 1][4];
+
         }
 
+
+        const backgroundsForPut = this.playersBg.join(',') + ',' + line[1].style.background
+
+        if (this.playersBg.length !== 0) {
+
+            line[1].style.background = backgroundsForPut;
+            line[1].dataset.player = this.playersData;
+
+        }
         line[0].style.background = 'none'
+        this.playersBg.length = 0;
     }
 
     refreshLine = (line, direction, row, col) => {
@@ -123,9 +150,6 @@ class Put {
         const element1 = this.getElementProperties(el1);
         const element2 = this.getElementProperties(el2);
 
-        el1.removeAttribute('data-item');
-        el2.removeAttribute('data-item');
-
         el2.style.background = element1[0];
         el1.style.background = element2[0];
         el2.style.transform = element1[1];
@@ -133,13 +157,20 @@ class Put {
 
         if (element1[2] !== '') el2.dataset.item = element1[2];
         if (element2[2] !== '') el1.dataset.item = element2[2];
+
+        if (element1[3] !== '') el2.dataset.entry = element1[3];
+        if (element2[3] !== '') el1.dataset.entry = element2[3];
     }
 
     getElementProperties = (el) => {
         const background = getComputedStyle(el).getPropertyValue('background');
         const rotation = getComputedStyle(el).getPropertyValue('transform');
         const item = (el.hasAttribute('data-item')) ? el.dataset.item : '';
-        return [background, rotation, item]
+        const entry = (el.hasAttribute('data-entry')) ? el.dataset.entry : '';
+        const player = (el.hasAttribute('data-player')) ? el.dataset.player : '';
+        el.removeAttribute('data-item');
+        el.removeAttribute('data-player');
+        return [background, rotation, item, entry, player]
     }
 }
 export default Put;

@@ -1,3 +1,5 @@
+import { entryType } from '../Board/entryType.js'
+
 class MovingField {
 
     constructor(type) {
@@ -11,15 +13,15 @@ class MovingField {
     addMovingField = () => {
         this.movingField.style.backgroundImage = `url(../img/${this.type}.png)`;
         this.arrow.addEventListener('click', this.rotateMovingField);
-
+        this.movingField.dataset.entry = entryType(this.type, this.rotate.toString())
     }
 
-    rotateMovingField = (e) => {
-
+    rotateMovingField = () => {
 
         this.rotate += 90;
+        if (this.rotate === 270) this.rotate = -90;
         this.movingField.style.transform = `rotate(${this.rotate}deg)`;
-        if (this.rotate === 360) this.rotate = 0;
+        this.movingField.dataset.entry = entryType(this.type, this.rotate.toString())
 
     }
 }
