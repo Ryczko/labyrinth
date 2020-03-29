@@ -86,7 +86,7 @@ class Board {
 
             el.style.transform = `rotate(${fieldRotation}deg)`;
 
-            el.dataset.entry = this.entryType(fieldType, fieldRotation)
+            el.dataset.entry = entryType(fieldType, fieldRotation);
         });
 
         const lastElement = optionArray.filter(el => el.number === 1)[0].type;
