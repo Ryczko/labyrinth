@@ -7,4 +7,4 @@ const board = new Board();
 const put = new Put();
 
 //argument = number of players
-const start = new Start(1);
+const start = new Start(4);

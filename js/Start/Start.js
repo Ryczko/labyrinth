@@ -7,6 +7,8 @@ class Start {
         this.treasures = this.shuffle(AllTreasuresData);
         this.dealCards(this.playerNumber, this.treasures);
         this.playersArray;
+
+        // this.roundManager();
     }
 
     dealCards = (playerNumber, treasures) => {
@@ -24,7 +26,6 @@ class Start {
         }
     }
 
-
     shuffle = (a) => {
         for (let i = a.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -32,5 +33,13 @@ class Start {
         }
         return a;
     }
+
+    // roundManager = () => {
+    //     const { playersArray } = this;
+
+    //     playersArray.forEach(({id}) => {
+            
+    //     })
+    // }
 }
 export default Start;
