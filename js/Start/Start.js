@@ -2,26 +2,32 @@ import { AllTreasuresData } from "../Data/AllTreasuresData.js";
 import Player from "../Player/Player.js"
 
 class Start {
-    constructor(playerNumber) {
+    constructor(playerNumber, put) {
+        this.put=put;
+
         this.playerNumber = playerNumber;
         this.treasures = this.shuffle(AllTreasuresData);
         this.dealCards(this.playerNumber, this.treasures);
         this.playersArray;
-
-        // this.roundManager();
+        this.activePlayer=0;
     }
 
     dealCards = (playerNumber, treasures) => {
         const cardAmount = treasures.length / playerNumber;
         let playersArray = [];
-
+        let id = 0;
+        let active = true;
 
         let show = true;
 
         for (let i = 0; i < playerNumber; i++) {
-            if (i !== 0) show = false;//chwilowo, by renederować karty tylko dla pierwszego gracza
+            if (i !== 0) {
+                show = false;
+                active=false;
+            }//chwilowo, by renederować karty tylko dla pierwszego gracza
             const playerCards = treasures.slice(i * cardAmount, cardAmount * (i + 1));
-            playersArray[i] = new Player(playerCards, show);
+
+            playersArray[i] = new Player(playerCards, show, id=i+1, this.roundManager, this.put);
             this.playersArray = playersArray;
         }
     }
@@ -34,12 +40,16 @@ class Start {
         return a;
     }
 
-    // roundManager = () => {
-    //     const { playersArray } = this;
+    roundManager = () => {
+        const { playersArray } = this;
 
-    //     playersArray.forEach(({id}) => {
-            
-    //     })
-    // }
+        this.activePlayer++;
+
+        if (this.activePlayer === playersArray.length) this.activePlayer = 0;
+
+        playersArray[this.activePlayer].move(this.activePlayer+1)
+
+        
+    }
 }
 export default Start;

@@ -8,7 +8,6 @@ class Board {
         this.entryType = entryType;
         this.addDataRowsAndColumns(roadFields);
         this.buildNewBoard(roadFields);
-
     }
 
     addDataRowsAndColumns = roadFields => {

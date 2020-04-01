@@ -6,6 +6,7 @@ class Put {
         this.size = this.movingField.offsetWidth;
         this.arrows.forEach(el => el.addEventListener('click', this.slide));
 
+        this.isMoved=false;
     }
 
     slide = (e) => {
@@ -102,6 +103,7 @@ class Put {
 
         element.removeAttribute('data-entry')
         element.style.display = '';
+        this.isMoved=true;
     }
 
     replaceAllLine(line) {
