@@ -5,9 +5,10 @@ class Player {
 		this.roadFields = [ ...document.querySelectorAll('.board__road-field') ];
 		this.cards = cards;
 		this.id = id;
+		this.startPosition = {};
 
 		this.put = put;
-		
+
 		this.changePlayer = roundMenager;
 		if (show) createCards(this.cards);
 		this.inicialPlayersPosition();
@@ -20,13 +21,17 @@ class Player {
 		const playerStartPositions = roadFields.filter((el) => el.dataset.player !== undefined);
 
 		playerStartPositions[id - 1].dataset.player = id;
-		playerStartPositions[
-			id - 1
-		].style.backgroundImage = `url(../img/players/player${id}.png), url(../img/roadCorner.png)`;
+
+		this.startPosition = {
+			column: playerStartPositions[id - 1].dataset.column,
+			row: playerStartPositions[id - 1].dataset.row
+		}
+
+		playerStartPositions[id - 1].style.backgroundImage = `url(../img/players/player${id}.png), url(../img/roadCorner.png)`;
 	};
 
 	move = (id) => {
-		const { roadFields} = this;
+		const { roadFields } = this;
 
 		console.log(`tura gracza ${id}`);
 
@@ -56,9 +61,9 @@ class Player {
 
 			moveAnimation(path, id);
 
-			console.log('koniec tury');
+			this.put.isMoved = false;
 
-			this.put.isMoved=false;
+			console.log('koniec tury');
 
 			this.changePlayer();
 		} else {
@@ -253,6 +258,40 @@ class Player {
 				}
 			}, 500 * (index + 1)); //animation speed
 		});
+
+		const treasureAnimationTime = (arrPath.length - 2) * 500;
+
+		setTimeout(() => this.collectTreasure(arrPath), treasureAnimationTime);
+	};
+
+	collectTreasure = (arrPath) => {
+		const { roadFields } = this;
+
+		const currentPosition = arrPath[arrPath.length - 1];
+		const currentField = roadFields.filter(
+			(el) => el.dataset.row === currentPosition[0] && el.dataset.column === currentPosition[1]
+		);
+
+		if (currentField[0].dataset.item !== undefined) {
+			const findingTreasure = this.cards[this.cards.length - 1].name;
+			const onFieldTreasure = currentField[0].dataset.item;
+
+			if (findingTreasure === onFieldTreasure) {
+				changeCard(this.cards);
+
+				currentField[0].removeAttribute('data-item');
+
+				const currentFieldBackgrounds = currentField[0].style.backgroundImage.split(',');
+				const newBackground = currentFieldBackgrounds.filter((el) => !el.includes('treasures'));
+				let backgroundString = '';
+
+				newBackground.forEach((el) => {
+					backgroundString += el + ', ';
+				});
+
+				currentField[0].style.backgroundImage = `${newBackground}`;
+			}
+		}
 	};
 }
 

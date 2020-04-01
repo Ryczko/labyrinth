@@ -3,7 +3,7 @@ import Player from "../Player/Player.js"
 
 class Start {
     constructor(playerNumber, put) {
-        this.put=put;
+        this.put = put;
 
         this.playerNumber = playerNumber;
         this.treasures = this.shuffle(AllTreasuresData);
