@@ -1,83 +1,86 @@
+.player {
+	grid-row: 1;
+	position: relative;
 
-.player{
-    display: flex;
-    justify-content: space-evenly;
-    grid-row: 1;
-    position: relative;
-    margin-top: 5rem;
+	display: grid;
+	grid-template-columns: repeat(3, 200px);
+	grid-template-rows: $road-field-size;
 
-    &__moving-field{
-        position: relative;
-        display: flex;
-        
-    
-        &__field{
+	&__moving-field {
+		position: relative;
+		display: flex;
+
+		&__field {
+			transition: .5s;
+			flex-basis: $road-field-size;
+			height: $road-field-size;
+			border: 1px solid black;
+			transform: rotate(0deg);
+            width: $road-field-size;
             background-size: 100%;
-            transition: .5s;
-            flex-basis: $road-field-size;
-            height: $road-field-size;
-            border:1px solid black;
-            transform: rotate(0deg);
-            width: $road-field-size;
-        }
-        &__arrow{
-            position: absolute;
-            right: -30%;
-            top: 0;
+		}
+		&__arrow {
+			position: absolute;
+			top: 0;
+			cursor: pointer;
+			background-color: rgb(207, 207, 207);
+			padding: .4rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
 
-            text-align: center;
-            margin-left: 2px;
-            cursor: pointer;
-            height: 30px;
-            line-height: 30px;
-            background-color: rgb(207, 207, 207);
-            align-self: center;
-            width: 30px;
-        }
-    }
+	&__cards {
+		position: relative;
 
-    &__cards{
-        
-        
-        &__card{
-            position:absolute;
-            width: $road-field-size;
-            height: $road-field-size+20;
-            transition: .5s;
-            transform-style:preserve-3d;
+		&__card {
+			position: absolute;
+			right: 0;
+			top: 1.1vh;
+
+			width: $road-field-size;
+			height: $road-field-size;
+			transition: .5s;
+			transform-style: preserve-3d;
+
+			&__front,
+			&__back {
+				position: absolute;
+				width: $road-field-size;
+				height: $road-field-size;
+				background-position: center;
+				border: 1px solid black;
+				border-radius: 4px;
+				-webkit-backface-visibility: hidden;
+				backface-visibility: hidden;
+			}
+
+			&__front {
+				background-color: rgb(87, 87, 87);
+			}
+			&__back {
+				background-color: #dbbe8e;
+				transform: rotateY(180deg) translate(0, -10px);
+			}
+		}
+	}
+
+	&__leave {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		& > button {
+			font-size: 1.7rem;
+			padding: .5rem;
+			background: #dbbe8e;
+			color: #575757;
+			border-color: #e7d4a9;
+			width: $road-field-size;
+			height: $road-field-size;
             
-    
-            &__front,&__back{
-                position: absolute;
-                width: $road-field-size;
-                height: $road-field-size+20;
-                background-position: center;
-                 border: 1px solid black;
-                 border-radius: 4px;
-                -webkit-backface-visibility: hidden;
-                backface-visibility: hidden;
-            }
-            
-            &__front{
-                background-color: rgb(87, 87, 87);
-               
-            }
-            &__back{
-                background-color: #DBBE8E;
-                transform: rotateY(180deg) translate(0, -10px);
-            }
-        }
-    }
-
-    &__leave {
-
-        & > button {
-            font-size: 1rem;
-            padding: .5rem;
-            background: #DBBE8E;
-            color: #575757;
-            border-color: #E7D4A9;
-            border-radius: 20%;
-        }
-    }
+            border: 1px solid black;
+		}
+	}
 }

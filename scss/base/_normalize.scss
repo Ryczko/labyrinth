@@ -6,21 +6,29 @@
 
 .game {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+
+    width: 100vw;
+    height: 100vh;
 }
 
 .board-wrapper {
     grid-column: 1;
-    position: absolute;
-    top: 5vh;
-    left: 4vw;
+    position: relative;
+    width: 100%;
+
+    display: flex;
+    align-self: center;
+    justify-content: center;
 }
 
-.panel-wrapper {
+.player-wrapper {
     grid-column: 2;
+
+    margin: 2vw 0 0 5vw;
+
     display: grid;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1r);
 }
