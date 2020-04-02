@@ -1,10 +1,7 @@
 .board{
     display: grid;
     grid-template-columns: repeat(7, $road-field-size);
-    grid-template-rows: repeat(7, $road-field-size);
-
-    // grid-gap: 1px;
-   
+    grid-template-rows: repeat(7, $road-field-size);   
     
     &__road-field{
         background-size: 100% !important;

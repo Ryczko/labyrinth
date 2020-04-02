@@ -1,10 +1,10 @@
 
 .player{
-display: flex;
-margin: 70px 0;
-justify-content: space-around;
-
-
+    display: flex;
+    justify-content: space-evenly;
+    grid-row: 1;
+    position: relative;
+    margin-top: 5rem;
 
     &__moving-field{
         position: relative;
@@ -21,14 +21,17 @@ justify-content: space-around;
             width: $road-field-size;
         }
         &__arrow{
-            
+            position: absolute;
+            right: -30%;
+            top: 0;
+
             text-align: center;
             margin-left: 2px;
             cursor: pointer;
             height: 30px;
             line-height: 30px;
             background-color: rgb(207, 207, 207);
-           align-self: center;
+            align-self: center;
             width: 30px;
         }
     }
@@ -63,6 +66,18 @@ justify-content: space-around;
                 background-color: #DBBE8E;
                 transform: rotateY(180deg) translate(0, -10px);
             }
+        }
+    }
+
+    &__leave {
+
+        & > button {
+            font-size: 1rem;
+            padding: .5rem;
+            background: #DBBE8E;
+            color: #575757;
+            border-color: #E7D4A9;
+            border-radius: 20%;
         }
     }
 }

@@ -4,17 +4,23 @@
     box-sizing: border-box;
 }
 
-body {
-    position: relative;
-}
-
 .game {
-    position: absolute;
-    left: 50%;
-    top:40px;
-    transform: translate(-50%, 5%);
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .board-wrapper {
-    position: relative;
+    grid-column: 1;
+    position: absolute;
+    top: 5vh;
+    left: 4vw;
+}
+
+.panel-wrapper {
+    grid-column: 2;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
 }

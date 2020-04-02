@@ -6,6 +6,7 @@ class Player {
 		this.cards = cards;
 		this.id = id;
 		this.startPosition = {};
+		this.leaveBtn = document.getElementById('button-leave');
 
 		this.put = put;
 
@@ -31,18 +32,40 @@ class Player {
 	};
 
 	move = (id) => {
-		const { roadFields } = this;
+		const { roadFields, leaveBtn } = this;
 
 		console.log(`tura gracza ${id}`);
+
+		leaveBtn.addEventListener('click', this.onLeave);
 
 		roadFields.forEach((el) => {
 			el.addEventListener('click', this.onClick);
 		});
 	};
 
+	onLeave = () => {
+		this.handleLeaveMove();
+	};
+
 	onClick = (e) => {
 		this.handleRoadField(this.id, e);
 	};
+
+	handleLeaveMove = () => {
+		const { put, leaveBtn } = this;
+
+		if (put.isMoved) {
+			put.isMoved = false;
+			leaveBtn.removeEventListener('click', this.onLeave);
+
+			console.log('koniec tury');
+	
+			this.changePlayer();
+		} else {
+			console.log('najpierw wsadź klocek');
+		}
+		
+	}
 
 	handleRoadField = (id, event) => {
 		const { createPath, isEntry, moveAnimation, roadFields, createMatrixBoard } = this;
@@ -140,8 +163,6 @@ class Player {
 	createPath = (field, id, matrixBoard) => {
 		const { roadFields } = this;
 
-		console.log(field)
-
 		const playerPosition = roadFields.filter((el) => el.dataset.player === `${id}`);
 
 		const xStart = parseInt(playerPosition[0].dataset.row),
@@ -228,6 +249,8 @@ class Player {
 			if (i % 2 !== 0) point = '';
 		}
 
+		const moveSpeed = 200;
+
 		arrPath.forEach((point, index) => {
 			setTimeout(() => {
 				if (index < arrPath.length - 1) {
@@ -259,10 +282,10 @@ class Player {
 
 					newPosition[0].style.backgroundImage = `url(../img/players/player${id}.png), ${newPostionBackground}`;
 				}
-			}, 500 * (index + 1)); //animation speed
+			}, moveSpeed * (index + 1)); //animation speed
 		});
 
-		const treasureAnimationTime = (arrPath.length - 2) * 500;
+		const treasureAnimationTime = (arrPath.length - 2) * moveSpeed;
 
 		setTimeout(() => this.collectTreasure(arrPath), treasureAnimationTime);
 	};
