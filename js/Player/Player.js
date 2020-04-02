@@ -36,35 +36,35 @@ class Player {
 
 		console.log(`tura gracza ${id}`);
 
-		leaveBtn.addEventListener('click', this.onLeave);
+		leaveBtn.addEventListener('click', this.handleLeaveMove);
 
 		roadFields.forEach((el) => {
 			el.addEventListener('click', this.onClick);
 		});
 	};
 
-	onLeave = () => {
-		this.handleLeaveMove();
-	};
+
 
 	onClick = (e) => {
 		this.handleRoadField(this.id, e);
 	};
 
 	handleLeaveMove = () => {
-		const { put, leaveBtn } = this;
+		const { put, leaveBtn, roadFields } = this;
 
 		if (put.isMoved) {
 			put.isMoved = false;
-			leaveBtn.removeEventListener('click', this.onLeave);
-
+			leaveBtn.removeEventListener('click', this.handleLeaveMove);
+			roadFields.forEach((el) => {
+				el.removeEventListener('click', this.onClick);
+			});
 			console.log('koniec tury');
-	
+
 			this.changePlayer();
 		} else {
 			console.log('najpierw wsadź klocek');
 		}
-		
+
 	}
 
 	handleRoadField = (id, event) => {

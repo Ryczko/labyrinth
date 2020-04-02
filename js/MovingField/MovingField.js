@@ -18,6 +18,25 @@ class MovingField {
 
     rotateMovingField = () => {
 
+        const entryData = this.movingField.dataset.entry.split(',');
+        const arr1 = ['top', 'bottom'];
+        const arr2 = ['left', 'right']
+
+        let checker = (arr, target) => target.every(el => arr.includes(el));
+
+        if (entryData.length === 3) {
+            this.type = 'roadSplit'
+        }
+
+        else {
+            if (checker(entryData, arr1) || checker(entryData, arr2)) {
+                this.type = 'roadEast'
+            }
+            else {
+                this.type = 'roadCorner'
+            }
+        }
+
         this.rotate += 90;
         if (this.rotate === 270) this.rotate = -90;
         this.movingField.style.transform = `rotate(${this.rotate}deg)`;
