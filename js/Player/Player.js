@@ -2,7 +2,7 @@ import { createCards, changeCard } from '../Cards/Cards.js';
 
 class Player {
 	constructor(cards, show, id, roundMenager, put) {
-		this.roadFields = [ ...document.querySelectorAll('.board__road-field') ];
+		this.roadFields = [...document.querySelectorAll('.board__road-field')];
 		this.cards = cards;
 		this.id = id;
 		this.startPosition = {};
@@ -50,9 +50,10 @@ class Player {
 		if (!this.put.isMoved) return console.log('najpierw wstaw klocek');
 
 		const matrixBoard = createMatrixBoard();
+
 		const field = event.target;
 
-		const path = createPath(field, id, matrixBoard);
+		const path = createPath(field, this.id, matrixBoard);
 
 		if (isEntry(path)) {
 			roadFields.forEach((el) => {
@@ -139,6 +140,8 @@ class Player {
 	createPath = (field, id, matrixBoard) => {
 		const { roadFields } = this;
 
+		console.log(field)
+
 		const playerPosition = roadFields.filter((el) => el.dataset.player === `${id}`);
 
 		const xStart = parseInt(playerPosition[0].dataset.row),
@@ -201,13 +204,13 @@ class Player {
 					path += `${iStart}${jStart}`;
 				}
 			}
-		} while (path.substr(path.length - 2, 2) !== `${xEnd}${yEnd}` && `${iStart}${jStart}` !== '00');
+		} while (path.substr(path.length - 2, 2) !== `${xEnd}${yEnd}` && path !== '');
 
 		return path;
 	};
 
 	isEntry = (path) => {
-		if (path === '' || path === '00') return false;
+		if (path === '') return false;
 		else return true;
 	};
 
@@ -240,8 +243,8 @@ class Player {
 					if (oldPostionBackground.length === 3) {
 						oldPostion[0].style.backgroundImage = `${oldPostion[0].style.backgroundImage.split(',')[1]}, 
                                                                                     ${oldPostion[0].style.backgroundImage.split(
-																						','
-																					)[2]}`;
+							','
+						)[2]}`;
 					} else {
 						oldPostion[0].style.backgroundImage = `${oldPostion[0].style.backgroundImage.split(',')[1]}`;
 					}

@@ -6,11 +6,12 @@ class Put {
         this.size = this.movingField.offsetWidth;
         this.arrows.forEach(el => el.addEventListener('click', this.slide));
 
-        this.isMoved=false;
+        this.isMoved = false;
     }
 
     slide = (e) => {
 
+        if (this.isMoved) return console.log('już ruszono klocek')
         this.arrows.forEach(el => {
             this.toggleArrowClasses(el);
             el.removeEventListener('click', this.slide);
@@ -103,7 +104,7 @@ class Put {
 
         element.removeAttribute('data-entry')
         element.style.display = '';
-        this.isMoved=true;
+        this.isMoved = true;
     }
 
     replaceAllLine(line) {
