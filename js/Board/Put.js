@@ -1,9 +1,11 @@
+import { newMessage } from '../Chat/newMessage.js'
+
 class Put {
 
     constructor() {
         this.arrows = document.querySelectorAll('.board-arrows');
         this.movingField = document.querySelector('.player__moving-field__field');
-        this.size = this.movingField.offsetWidth;
+        this.size = this.movingField.offsetWidth + 1;
         this.arrows.forEach(el => el.addEventListener('click', this.slide));
 
         this.isMoved = false;
@@ -11,12 +13,8 @@ class Put {
 
     slide = (e) => {
 
-        if (this.isMoved) return console.log('już ruszono klocek')
-        this.arrows.forEach(el => {
-            this.toggleArrowClasses(el);
-            el.removeEventListener('click', this.slide);
-            el.style.display = ""
-        })
+        if (this.isMoved) return newMessage('Bot', 'Już ruszono klocek!')
+
 
 
         let info = {
@@ -35,7 +33,11 @@ class Put {
             secondDirection = "row";
             topOrLeft = "top"
         }
-
+        this.arrows.forEach(el => {
+            this.toggleArrowClasses(el);
+            el.removeEventListener('click', this.slide);
+            el.style.display = ""
+        })
 
         const toBlock = (info[secondDirection] == 6) ? 0 : 6;
         const blockArrow = document.querySelector(`.arrows [data-${secondDirection}="${toBlock}"][data-${mainDirection}="${info[mainDirection]}"]`)
@@ -45,8 +47,10 @@ class Put {
 
         if (column == 6 || row == 6) transformValue = -1;
 
+
+        this.size = this.movingField.offsetWidth + 1;
         let allLine = document.querySelectorAll(`.board div[data-${mainDirection}="${info[mainDirection]}"]`);
-        allLine.forEach(el => el.style[topOrLeft] = `${transformValue * this.size}px`);
+        allLine.forEach(el => el.style[topOrLeft] = `${transformValue * (this.size)}px`);
 
         this.putMovingElement(e.target, allLine, secondDirection, transformValue)
     }
@@ -56,12 +60,12 @@ class Put {
         const last = (transformValue == 1) ? 6 : 0;
         const lastElement = [...line].filter(el => el.dataset[direction] == last);
         element.style.display = "block";
+        element.style.borderRadius = '5px';
 
         setTimeout(() => {
             this.replace(element, this.movingField)
 
-        }, 300)
-        setTimeout(() => {
+
             const bgArray = lastElement[0].style.backgroundImage.split(',');
             this.playersBg = bgArray.filter(el => el.includes('player'));
             const othersBg = bgArray.filter(el => !el.includes('player'));
@@ -72,10 +76,23 @@ class Put {
 
             this.replace(this.movingField, lastElement[0])
 
+            this.comeBack(element, line, lastElement[0], transformValue)
 
-        }, 600)
+        }, 800)
+        // setTimeout(() => {
+        //     const bgArray = lastElement[0].style.backgroundImage.split(',');
+        //     this.playersBg = bgArray.filter(el => el.includes('player'));
+        //     const othersBg = bgArray.filter(el => !el.includes('player'));
 
-        setTimeout(() => this.comeBack(element, line, lastElement[0], transformValue), 600)
+        //     lastElement[0].style.backgroundImage = othersBg.join(',')
+        //     if (this.playersBg.length !== 0) this.playersData = lastElement[0].dataset.player;
+
+
+        //     this.replace(this.movingField, lastElement[0])
+
+        // }, 1000)
+
+        // setTimeout(() => this.comeBack(element, line, lastElement[0], transformValue), 1000)
     }
 
     comeBack = (element, line, last, transformValue) => {
@@ -95,7 +112,7 @@ class Put {
 
         this.replaceAllLine(line)
 
-        line.forEach(el => el.style.transition = 'left .5s,top .5s');
+        line.forEach(el => el.style.transition = 'left .4s linear,top .4s linear');
 
         this.arrows.forEach(el => {
             this.toggleArrowClasses(el);
@@ -144,6 +161,8 @@ class Put {
 
     toggleArrowClasses = (el) => {
         el.classList.toggle('unactive');
+
+
         el.parentNode.classList.toggle('unactive');
         el.style.transform = 'none'
     }

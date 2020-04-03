@@ -1,5 +1,5 @@
 import { createCards, changeCard } from '../Cards/Cards.js';
-
+import { newMessage } from '../Chat/newMessage.js'
 class Player {
 	constructor(cards, show, id, roundMenager, put) {
 		this.roadFields = [...document.querySelectorAll('.board__road-field')];
@@ -34,7 +34,7 @@ class Player {
 	move = (id) => {
 		const { roadFields, leaveBtn } = this;
 
-		console.log(`tura gracza ${id}`);
+		newMessage('Bot', `tura gracza ${id}`);
 
 		leaveBtn.addEventListener('click', this.handleLeaveMove);
 
@@ -53,24 +53,25 @@ class Player {
 		const { put, leaveBtn, roadFields } = this;
 
 		if (put.isMoved) {
-			put.isMoved = false;
+			// put.isMoved = false;
 			leaveBtn.removeEventListener('click', this.handleLeaveMove);
 			roadFields.forEach((el) => {
 				el.removeEventListener('click', this.onClick);
 			});
-			console.log('koniec tury');
+
 
 			this.changePlayer();
 		} else {
-			console.log('najpierw wsadź klocek');
+			newMessage('Bot', 'Najpierw wsadź klocek!')
+
 		}
 
 	}
 
 	handleRoadField = (id, event) => {
-		const { createPath, isEntry, moveAnimation, roadFields, createMatrixBoard } = this;
+		const { createPath, isEntry, moveAnimation, roadFields, createMatrixBoard, leaveBtn } = this;
 
-		if (!this.put.isMoved) return console.log('najpierw wstaw klocek');
+		if (!this.put.isMoved) return newMessage('Bot', 'najpierw wsadź klocek!');
 
 		const matrixBoard = createMatrixBoard();
 
@@ -85,13 +86,12 @@ class Player {
 
 			moveAnimation(path, id);
 
-			this.put.isMoved = false;
-
-			console.log('koniec tury');
+			// this.put.isMoved = false;
+			leaveBtn.removeEventListener('click', this.handleLeaveMove);
 
 			this.changePlayer();
 		} else {
-			console.log('brak przejścia');
+			newMessage('Bot', 'Brak przejścia!');
 		}
 	};
 

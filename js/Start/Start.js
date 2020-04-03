@@ -1,15 +1,15 @@
 import { AllTreasuresData } from "../Data/AllTreasuresData.js";
 import Player from "../Player/Player.js"
-
+import { newMessage } from '../Chat/newMessage.js'
 class Start {
     constructor(playerNumber, put) {
         this.put = put;
-
-        this.playerNumber = playerNumber;
+        this.chat =
+            this.playerNumber = playerNumber;
         this.treasures = this.shuffle(AllTreasuresData);
         this.dealCards(this.playerNumber, this.treasures);
         this.playersArray;
-        this.activePlayer=0;
+        this.activePlayer = 0;
     }
 
     dealCards = (playerNumber, treasures) => {
@@ -23,11 +23,12 @@ class Start {
         for (let i = 0; i < playerNumber; i++) {
             if (i !== 0) {
                 show = false;
-                active=false;
+                active = false;
             }//chwilowo, by renederować karty tylko dla pierwszego gracza
             const playerCards = treasures.slice(i * cardAmount, cardAmount * (i + 1));
 
-            playersArray[i] = new Player(playerCards, show, id=i+1, this.roundManager, this.put);
+            playersArray[i] = new Player(playerCards, show, id = i + 1, this.roundManager, this.put);
+            newMessage(`Bot`, `Welcome to game player ${id}`)
             this.playersArray = playersArray;
         }
     }
@@ -44,12 +45,12 @@ class Start {
         const { playersArray } = this;
 
         this.activePlayer++;
-
+        this.put.isMoved = false;
         if (this.activePlayer === playersArray.length) this.activePlayer = 0;
 
-        playersArray[this.activePlayer].move(this.activePlayer+1)
+        playersArray[this.activePlayer].move(this.activePlayer + 1)
 
-        
+
     }
 }
 export default Start;

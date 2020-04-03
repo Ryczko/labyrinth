@@ -4,7 +4,8 @@
     display: grid;
     grid-template-columns: repeat(7, $road-field-size);        
     z-index: 100;
-
+    
+    left: 0;
     & > i {
         display: flex;
         justify-content: center;
@@ -30,7 +31,7 @@
     display: grid;
     grid-template-rows: repeat(7, $road-field-size);  
     z-index: 100;
-
+    
     & > i {
         display: flex;
         align-items: center;
@@ -52,13 +53,14 @@
 .board-arrows.unactive{
     display: none;
     width: $road-field-size;
-    height: $road-field-size;
+    height: $road-field-size ;
     color:rgba(255, 255, 255, 0);
+   
 }
 
 .arrows-top, .arrows-bottom {
     @include arrow-column;
-
+    grid-gap:$road-field-gap;
     &.unactive{
         animation: 'none';
     }
@@ -76,7 +78,8 @@
 
 .arrows-right, .arrows-left {
     @include arrow-row;
-
+    grid-gap:$road-field-gap ;
+    
     
     &.unactive{
         animation: 'none';
@@ -84,11 +87,12 @@
 }
 
 .arrows-left {
-    animation: move-left 1s infinite alternate;
+   animation: move-left 1s infinite alternate;
 }
 
 .arrows-right {
-    right: 2.2vw;
+    
+    right: 0;
     animation: move-right 1s infinite alternate;
 }
 
@@ -126,4 +130,9 @@
     to {
         transform: translateX(20px);
     }
+}
+.arrows{
+    width:  $road-field-size*7 + 7* $road-field-gap;
+    height: $road-field-size *7 + 7* $road-field-gap;
+    position: absolute;
 }

@@ -1,14 +1,19 @@
 .player {
-	grid-row: 1;
+	
 	position: relative;
-
-	display: grid;
-	grid-template-columns: repeat(3, 200px);
-	grid-template-rows: $road-field-size;
-
+	background-color: rgb(173, 173, 173);
+	padding: 20px 0;
+	display: flex;
+	align-self: center;
+	
+	@media(max-width:1150px){
+		flex-direction: column;
+	}
+	
 	&__moving-field {
 		position: relative;
 		display: flex;
+		margin-left: 30px;
 
 		&__field {
 			transition: .5s;
@@ -32,7 +37,8 @@
 	}
 
 	&__cards {
-		position: relative;
+		position: absolute;
+		right: 10%;
 
 		&__card {
 			position: absolute;
@@ -70,17 +76,21 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-
+		margin-left: 30px;
+		margin-top: 20px;
 		& > button {
 			font-size: 1.7rem;
 			padding: .5rem;
 			background: #dbbe8e;
+			cursor: pointer;
 			color: #575757;
 			border-color: #e7d4a9;
-			width: $road-field-size;
-			height: $road-field-size;
-            
-            border: 1px solid black;
+			border: 1px solid black;
+			transition: .3s;
+			
+			&:hover{
+				transform: scale(0.98);
+			}
 		}
 	}
 }

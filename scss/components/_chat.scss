@@ -1,12 +1,15 @@
 .chat {
-    grid-row: 2;
+background-color: blanchedalmond;
+padding: 25px 0;
+height: 80%;
 
     &__messages {
-        height: 80%;
-        width: 80%;
+        margin: 0 auto;
+        height: 400px;
+        width: 90%;
         list-style-type: none;
         border: .2rem solid #000;
-
+        overflow: scroll;
         margin-bottom: .7rem;
 
         & > li {
@@ -16,6 +19,7 @@
     }
 
     &__form {
+        text-align: center;
         &__input {
             border: none;
             border-bottom: .1rem solid #000;

@@ -1,15 +1,19 @@
 .board{
     display: grid;
     grid-template-columns: repeat(7, $road-field-size);
-    grid-template-rows: repeat(7, $road-field-size);   
-    
+    grid-template-rows: repeat(7, $road-field-size);  
+    background-color: black;
+    grid-gap:$road-field-gap;
+   
     &__road-field{
         background-size: 100% !important;
-        transition: left .5s,top .5s;
+        transition: left .4s linear,top .4s linear;
         position: relative;
+        border-radius: 5px;
         top:0;
         left:0;
-
+       
+       
         &.replace{
             transition: 0;
         }
