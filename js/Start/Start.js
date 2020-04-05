@@ -1,6 +1,7 @@
 import { AllTreasuresData } from "../Data/AllTreasuresData.js";
 import Player from "../Player/Player.js"
-import { newMessage } from '../Chat/newMessage.js'
+import { newMessage } from '../Chat/newMessage.js';
+
 class Start {
     constructor(playerNumber, put) {
         this.put = put;
@@ -10,6 +11,7 @@ class Start {
         this.dealCards(this.playerNumber, this.treasures);
         this.playersArray;
         this.activePlayer = 0;
+
     }
 
     dealCards = (playerNumber, treasures) => {

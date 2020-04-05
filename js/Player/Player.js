@@ -14,6 +14,9 @@ class Player {
 		if (show) createCards(this.cards);
 		this.inicialPlayersPosition();
 		if (show) this.move(id);
+
+		this.timer = document.querySelector('.player__timer');
+		this.time = 30;
 	}
 
 	inicialPlayersPosition = () => {
@@ -31,10 +34,25 @@ class Player {
 		playerStartPositions[id - 1].style.backgroundImage = `url(../img/players/player${id}.png), url(../img/roadCorner.png)`;
 	};
 
+	startCounting = () => {
+		let { put, timer } = this;
+		if (this.time === 0) {
+			put.isMoved = true;
+			this.handleLeaveMove();
+			this.time = 30;
+
+		}
+		this.time--;
+		timer.textContent = this.time;
+	}
+
 	move = (id) => {
 		const { roadFields, leaveBtn } = this;
 
 		newMessage('Bot', `tura gracza ${id}`);
+
+		this.countingInterval = setInterval(this.startCounting, 1000);
+
 
 		leaveBtn.addEventListener('click', this.handleLeaveMove);
 
@@ -42,8 +60,6 @@ class Player {
 			el.addEventListener('click', this.onClick);
 		});
 	};
-
-
 
 	onClick = (e) => {
 		this.handleRoadField(this.id, e);
@@ -53,17 +69,17 @@ class Player {
 		const { put, leaveBtn, roadFields } = this;
 
 		if (put.isMoved) {
-			// put.isMoved = false;
+
 			leaveBtn.removeEventListener('click', this.handleLeaveMove);
 			roadFields.forEach((el) => {
 				el.removeEventListener('click', this.onClick);
 			});
 
-
+			clearInterval(this.countingInterval);
+			this.time = 30;
 			this.changePlayer();
 		} else {
 			newMessage('Bot', 'Najpierw wsadź klocek!')
-
 		}
 
 	}
@@ -83,12 +99,13 @@ class Player {
 			roadFields.forEach((el) => {
 				el.removeEventListener('click', this.onClick);
 			});
-
+			clearInterval(this.countingInterval);
 			moveAnimation(path, id);
 
-			// this.put.isMoved = false;
 			leaveBtn.removeEventListener('click', this.handleLeaveMove);
 
+
+			this.time = 30;
 			this.changePlayer();
 		} else {
 			newMessage('Bot', 'Brak przejścia!');
