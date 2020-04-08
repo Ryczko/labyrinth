@@ -7,15 +7,12 @@ class Put {
         this.movingField = document.querySelector('.player__moving-field__field');
         this.size = this.movingField.offsetWidth + 1;
         this.arrows.forEach(el => el.addEventListener('click', this.slide));
-
         this.isMoved = false;
     }
 
     slide = (e) => {
 
         if (this.isMoved) return newMessage('Bot', 'Już ruszono klocek!')
-
-
 
         let info = {
             row: e.target.dataset.row,
@@ -44,7 +41,6 @@ class Put {
         blockArrow.style.display = 'none'
 
 
-
         if (column == 6 || row == 6) transformValue = -1;
 
 
@@ -65,34 +61,27 @@ class Put {
         setTimeout(() => {
             this.replace(element, this.movingField)
 
-
-            const bgArray = lastElement[0].style.backgroundImage.split(',');
-            this.playersBg = bgArray.filter(el => el.includes('player'));
-            const othersBg = bgArray.filter(el => !el.includes('player'));
-
-            lastElement[0].style.backgroundImage = othersBg.join(',')
-            if (this.playersBg.length !== 0) this.playersData = lastElement[0].dataset.player;
+            const playersDivs = [...lastElement[0].children];
+            const newEl = (transformValue === -1) ? line[line.length - 1] : line[0];
+            const oldEl = lastElement[0];
+            const oldPlayerData = oldEl.dataset.player
 
 
             this.replace(this.movingField, lastElement[0])
+            this.comeBack(element, line, lastElement[0], transformValue);
 
-            this.comeBack(element, line, lastElement[0], transformValue)
+            if (playersDivs.length !== 0) {
+
+                playersDivs.forEach(el => {
+
+                    newEl.appendChild(el)
+                })
+
+                newEl.dataset.player = oldPlayerData;
+            }
 
         }, 800)
-        // setTimeout(() => {
-        //     const bgArray = lastElement[0].style.backgroundImage.split(',');
-        //     this.playersBg = bgArray.filter(el => el.includes('player'));
-        //     const othersBg = bgArray.filter(el => !el.includes('player'));
 
-        //     lastElement[0].style.backgroundImage = othersBg.join(',')
-        //     if (this.playersBg.length !== 0) this.playersData = lastElement[0].dataset.player;
-
-
-        //     this.replace(this.movingField, lastElement[0])
-
-        // }, 1000)
-
-        // setTimeout(() => this.comeBack(element, line, lastElement[0], transformValue), 1000)
     }
 
     comeBack = (element, line, last, transformValue) => {
@@ -133,25 +122,23 @@ class Put {
 
         for (let i = line.length - 1; i > 0; i--) {
 
+
             line[i].style.background = info[i - 1][0];
             line[i].style.transform = info[i - 1][1];
             if (info[i - 1][2] != '') line[i].dataset.item = info[i - 1][2];
             if (info[i - 1][3] != '') line[i].dataset.entry = info[i - 1][3];
             if (info[i - 1][4] != '') line[i].dataset.player = info[i - 1][4];
 
+            if (info[i - 1][5].length !== 0) {
+
+                info[i - 1][5].forEach(el => {
+                    line[i].appendChild(el)
+                })
+            }
         }
 
-
-        const backgroundsForPut = this.playersBg.join(',') + ',' + line[1].style.background
-
-        if (this.playersBg.length !== 0) {
-
-            line[1].style.background = backgroundsForPut;
-            line[1].dataset.player = this.playersData;
-
-        }
         line[0].style.background = 'none'
-        this.playersBg.length = 0;
+
     }
 
     refreshLine = (line, direction, row, col) => {
@@ -161,8 +148,6 @@ class Put {
 
     toggleArrowClasses = (el) => {
         el.classList.toggle('unactive');
-
-
         el.parentNode.classList.toggle('unactive');
         el.style.transform = 'none'
     }
@@ -190,9 +175,20 @@ class Put {
         const item = (el.hasAttribute('data-item')) ? el.dataset.item : '';
         const entry = (el.hasAttribute('data-entry')) ? el.dataset.entry : '';
         const player = (el.hasAttribute('data-player')) ? el.dataset.player : '';
+
+        let playerDiv = [];
+        if (player !== '') {
+
+            [...el.children].forEach(e => {
+                playerDiv.push(e)
+            })
+
+            el.innerHTML = '';
+        }
+
         el.removeAttribute('data-item');
         el.removeAttribute('data-player');
-        return [background, rotation, item, entry, player]
+        return [background, rotation, item, entry, player, playerDiv]
     }
 }
 export default Put;
