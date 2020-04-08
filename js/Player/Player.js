@@ -19,6 +19,8 @@ class Player {
 
 		this.timer = document.querySelector('.player__timer');
 		this.time = 30;
+
+		this.playerSkin;
 	}
 
 	inicialPlayersPosition = () => {
@@ -38,7 +40,10 @@ class Player {
 		player.classList.add('pawn');
 
 		//random color
-		player.style.backgroundColor = `rgb(${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)})`;
+		this.playerSkin = `rgb(${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)})`;
+
+		player.style.backgroundColor = this.playerSkin
+
 
 		playerStartPositions[id - 1].append(player);
 
@@ -60,7 +65,7 @@ class Player {
 	move = (id) => {
 		const { roadFields, leaveBtn } = this;
 
-		newMessage('Bot', `tura gracza ${id}`);
+		newMessage('Bot', `tura gracza ${id}`, this.playerSkin);
 
 		this.countingInterval = setInterval(this.startCounting, 1000);
 
@@ -210,7 +215,7 @@ class Player {
 			field = field.parentElement;
 
 			xEnd = parseInt(field.dataset.row),
-			yEnd = parseInt(field.dataset.column);
+				yEnd = parseInt(field.dataset.column);
 		}
 
 		let iStart = xStart,
@@ -299,7 +304,7 @@ class Player {
 					const oldPostion = roadFields.filter(
 						(el) => el.dataset.row === point[0] && el.dataset.column === point[1]
 					);
-					
+
 					if (oldPostion[0].dataset.player !== undefined) {
 						if (oldPostion[0].dataset.player.length > 1) {
 							oldPostion[0].dataset.player = oldPostion[0].dataset.player.replace(id, '');
@@ -319,7 +324,7 @@ class Player {
 					} else {
 						newPosition[0].dataset.player += `${id}`;
 					}
-					
+
 					newPosition[0].append(this.pawn);
 				}
 			}, moveSpeed * (index + 1)); //animation speed

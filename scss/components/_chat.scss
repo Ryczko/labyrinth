@@ -15,6 +15,13 @@ height: 80%;
         & > li {
             padding: .5rem;
             border-bottom: .1rem dotted #000;
+            display: flex;
+            .box{
+                width: 15px;
+                height: 15px;
+                align-self: center;
+               margin-left: 10px;
+            }
         }
     }
 
