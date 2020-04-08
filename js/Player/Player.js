@@ -8,6 +8,8 @@ class Player {
 		this.startPosition = {};
 		this.leaveBtn = document.getElementById('button-leave');
 
+		this.pawn = null;
+
 		this.put = put;
 
 		this.changePlayer = roundMenager;
@@ -31,7 +33,16 @@ class Player {
 			row: playerStartPositions[id - 1].dataset.row
 		}
 
-		playerStartPositions[id - 1].style.backgroundImage = `url(../img/players/player${id}.png), url(../img/roadCorner.png)`;
+		const player = document.createElement('div');
+		player.id = `player${id}`;
+		player.classList.add('pawn');
+
+		//random color
+		player.style.backgroundColor = `rgb(${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)})`;
+
+		playerStartPositions[id - 1].append(player);
+
+		this.pawn = player;
 	};
 
 	startCounting = () => {
@@ -180,13 +191,27 @@ class Player {
 	createPath = (field, id, matrixBoard) => {
 		const { roadFields } = this;
 
-		const playerPosition = roadFields.filter((el) => el.dataset.player === `${id}`);
+		const playerPosition = roadFields.filter((el) => {
+			if (el.dataset.player !== undefined) {
+				if (el.dataset.player.length > 1) return el.dataset.player.indexOf(id) != -1;
+				else return el.dataset.player === `${id}`;
+			}
+		});
+
+		console.log(playerPosition[0])
 
 		const xStart = parseInt(playerPosition[0].dataset.row),
 			yStart = parseInt(playerPosition[0].dataset.column);
 
-		const xEnd = parseInt(field.dataset.row),
+		let xEnd = parseInt(field.dataset.row),
 			yEnd = parseInt(field.dataset.column);
+
+		if (isNaN(xEnd) || isNaN(yEnd)) {
+			field = field.parentElement;
+
+			xEnd = parseInt(field.dataset.row),
+			yEnd = parseInt(field.dataset.column);
+		}
 
 		let iStart = xStart,
 			jStart = yStart;
@@ -274,30 +299,28 @@ class Player {
 					const oldPostion = roadFields.filter(
 						(el) => el.dataset.row === point[0] && el.dataset.column === point[1]
 					);
-					const oldPostionBackground = oldPostion[0].style.backgroundImage.split(',');
-
-					if (oldPostion[0].dataset.player.length > 1)
-						oldPostion[0].dataset.player.substr(oldPostion[0].dataset.player.indexOf(id), 1);
-					else oldPostion[0].removeAttribute('data-player');
-
-					if (oldPostionBackground.length === 3) {
-						oldPostion[0].style.backgroundImage = `${oldPostion[0].style.backgroundImage.split(',')[1]}, 
-                                                                                    ${oldPostion[0].style.backgroundImage.split(
-							','
-						)[2]}`;
-					} else {
-						oldPostion[0].style.backgroundImage = `${oldPostion[0].style.backgroundImage.split(',')[1]}`;
+					
+					if (oldPostion[0].dataset.player !== undefined) {
+						if (oldPostion[0].dataset.player.length > 1) {
+							oldPostion[0].dataset.player = oldPostion[0].dataset.player.replace(id, '');
+						} else {
+							oldPostion[0].removeAttribute('data-player');
+						}
 					}
+
+					oldPostion[0].removeChild(this.pawn);
 
 					const newPosition = roadFields.filter(
 						(el) => el.dataset.row === arrPath[index + 1][0] && el.dataset.column === arrPath[index + 1][1]
 					);
-					const newPostionBackground = newPosition[0].style.backgroundImage;
 
-					if (newPosition[0].dataset.player !== undefined) newPosition[0].dataset.player += id;
-					else newPosition[0].dataset.player = id;
-
-					newPosition[0].style.backgroundImage = `url(../img/players/player${id}.png), ${newPostionBackground}`;
+					if (newPosition[0].dataset.player === undefined) {
+						newPosition[0].dataset.player = `${id}`;
+					} else {
+						newPosition[0].dataset.player += `${id}`;
+					}
+					
+					newPosition[0].append(this.pawn);
 				}
 			}, moveSpeed * (index + 1)); //animation speed
 		});
