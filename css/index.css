@@ -473,6 +473,18 @@
 .chat__messages > li {
   padding: .5rem;
   border-bottom: .1rem dotted #000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.chat__messages > li .box {
+  width: 15px;
+  height: 15px;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  margin-left: 10px;
 }
 
 .chat__form {
