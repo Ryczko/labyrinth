@@ -60,6 +60,11 @@
   border-radius: 5px;
   top: 0;
   left: 0;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
+  padding: .5rem;
 }
 
 .board__road-field.replace {
@@ -88,6 +93,12 @@
 .board__road-field:nth-child(21), .board__road-field:nth-child(33), .board__road-field:nth-child(35), .board__road-field:nth-child(43) {
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
+}
+
+.pawn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 
 .player {
