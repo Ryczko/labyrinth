@@ -7,7 +7,6 @@ class Player {
 		this.id = id;
 		this.startPosition = {};
 		this.leaveBtn = document.getElementById('button-leave');
-
 		this.pawn = null;
 
 		this.put = put;
@@ -21,6 +20,7 @@ class Player {
 		this.time = 30;
 
 		this.playerSkin;
+		this.win = false;
 	}
 
 	inicialPlayersPosition = () => {
@@ -41,9 +41,7 @@ class Player {
 
 		//random color
 		this.playerSkin = `rgb(${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)})`;
-
 		player.style.backgroundColor = this.playerSkin
-
 
 		playerStartPositions[id - 1].append(player);
 
@@ -65,7 +63,7 @@ class Player {
 	move = (id) => {
 		const { roadFields, leaveBtn } = this;
 
-		newMessage('Bot', `tura gracza ${id}`, this.playerSkin);
+		newMessage('Bot', `Player's turn number ${id}`, this.playerSkin);
 
 		this.countingInterval = setInterval(this.startCounting, 1000);
 
@@ -93,9 +91,11 @@ class Player {
 
 			clearInterval(this.countingInterval);
 			this.time = 30;
-			this.changePlayer();
+
+			if (!this.win) this.changePlayer();
+			else newMessage('Bot', 'End of the game!');
 		} else {
-			newMessage('Bot', 'Najpierw wsadź klocek!')
+			newMessage('Bot', 'In first put the block!')
 		}
 
 	}
@@ -103,7 +103,7 @@ class Player {
 	handleRoadField = (id, event) => {
 		const { createPath, isEntry, moveAnimation, roadFields, createMatrixBoard, leaveBtn } = this;
 
-		if (!this.put.isMoved) return newMessage('Bot', 'najpierw wsadź klocek!');
+		if (!this.put.isMoved) return newMessage('Bot', 'In first put the block!');
 
 		const matrixBoard = createMatrixBoard();
 
@@ -111,20 +111,48 @@ class Player {
 
 		const path = createPath(field, this.id, matrixBoard);
 
-		if (isEntry(path)) {
-			roadFields.forEach((el) => {
-				el.removeEventListener('click', this.onClick);
-			});
-			clearInterval(this.countingInterval);
-			moveAnimation(path, id);
+		if (path !== undefined) {
+			if (isEntry(path)) {
+				roadFields.forEach((el) => {
+					el.removeEventListener('click', this.onClick);
+				});
 
-			leaveBtn.removeEventListener('click', this.handleLeaveMove);
+				clearInterval(this.countingInterval);
+				moveAnimation(path, id);
+	
+				leaveBtn.removeEventListener('click', this.handleLeaveMove);
 
+				this.time = 30;
 
-			this.time = 30;
-			this.changePlayer();
-		} else {
-			newMessage('Bot', 'Brak przejścia!');
+				if (!this.win) this.changePlayer();
+				else newMessage('Bot', 'End of the game!');
+			} else {
+				newMessage('Bot', 'No transition!');
+			}
+		}
+	};
+
+	isWin = (arrPath) => {
+		const { cards, startPosition } = this;
+
+		console.log(arrPath)
+
+		const xPlayer = parseInt(arrPath[0]),
+			  yPlayer = parseInt(arrPath[1]);
+		
+		if (cards.length === 0 && xPlayer === parseInt(startPosition.row) && yPlayer === parseInt(startPosition.column)) {
+			this.win = true;
+			return true;
+		} else return false;
+	};
+
+	showFinish = () => {
+		const { cards, roadFields, startPosition } = this;
+
+		if (cards.length === 0) {
+			const finishPosition = roadFields.filter(el => el.dataset.row === startPosition.row && el.dataset.column === startPosition.column);
+
+			finishPosition[0].style.filter = 'contrast(1.5)';
 		}
 	};
 
@@ -203,8 +231,6 @@ class Player {
 			}
 		});
 
-		console.log(playerPosition[0])
-
 		const xStart = parseInt(playerPosition[0].dataset.row),
 			yStart = parseInt(playerPosition[0].dataset.column);
 
@@ -214,8 +240,12 @@ class Player {
 		if (isNaN(xEnd) || isNaN(yEnd)) {
 			field = field.parentElement;
 
-			xEnd = parseInt(field.dataset.row),
-				yEnd = parseInt(field.dataset.column);
+			xEnd = parseInt(field.dataset.row);
+			yEnd = parseInt(field.dataset.column);
+		}
+
+		if (xStart === xEnd && yStart === yEnd) {
+			return newMessage('Bot', 'You are standing here, select another place');
 		}
 
 		let iStart = xStart,
@@ -333,36 +363,43 @@ class Player {
 		const treasureAnimationTime = (arrPath.length - 2) * moveSpeed;
 
 		setTimeout(() => this.collectTreasure(arrPath), treasureAnimationTime);
+
+		if (this.isWin(arrPath[arrPath.length - 1])) return newMessage('Bot', `Congratulations, player ${id} wins!`);
 	};
 
 	collectTreasure = (arrPath) => {
 		const { roadFields } = this;
 
-		const currentPosition = arrPath[arrPath.length - 1];
-		const currentField = roadFields.filter(
-			(el) => el.dataset.row === currentPosition[0] && el.dataset.column === currentPosition[1]
-		);
-
-		if (currentField[0].dataset.item !== undefined) {
-			const findingTreasure = this.cards[this.cards.length - 1].name;
-			const onFieldTreasure = currentField[0].dataset.item;
-
-			if (findingTreasure === onFieldTreasure) {
-				changeCard(this.cards);
-
-				currentField[0].removeAttribute('data-item');
-
-				const currentFieldBackgrounds = currentField[0].style.backgroundImage.split(',');
-				const newBackground = currentFieldBackgrounds.filter((el) => !el.includes('treasures'));
-				let backgroundString = '';
-
-				newBackground.forEach((el) => {
-					backgroundString += el + ', ';
-				});
-
-				currentField[0].style.backgroundImage = `${newBackground}`;
+		if (this.cards.length > 0) {
+			const currentPosition = arrPath[arrPath.length - 1];
+			const currentField = roadFields.filter(
+				(el) => el.dataset.row === currentPosition[0] && el.dataset.column === currentPosition[1]
+			);
+	
+			if (currentField[0].dataset.item !== undefined) {
+				const findingTreasure = this.cards[this.cards.length - 1].name;
+				const onFieldTreasure = currentField[0].dataset.item;
+	
+				if (findingTreasure === onFieldTreasure) {
+					changeCard(this.cards);
+	
+					currentField[0].removeAttribute('data-item');
+	
+					const currentFieldBackgrounds = currentField[0].style.backgroundImage.split(',');
+					const newBackground = currentFieldBackgrounds.filter((el) => !el.includes('treasures'));
+					let backgroundString = '';
+	
+					newBackground.forEach((el) => {
+						backgroundString += el + ', ';
+					});
+	
+					currentField[0].style.backgroundImage = `${newBackground}`;
+	
+					newMessage('Bot', `Player ${this.id} collected the ${onFieldTreasure}!`);
+					this.showFinish();
+				}
 			}
-		}
+		} 
 	};
 }
 

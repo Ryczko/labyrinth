@@ -8,4 +8,4 @@ const board = new Board();
 const put = new Put();
 inicializeChat();
 //argument = number of players
-const start = new Start(4, put);
+const start = new Start(1, put);

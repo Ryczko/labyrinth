@@ -12,7 +12,7 @@ class Put {
 
     slide = (e) => {
 
-        if (this.isMoved) return newMessage('Bot', 'Już ruszono klocek!')
+        if (this.isMoved) return newMessage('Bot', 'Field has already been moved!')
 
         let info = {
             row: e.target.dataset.row,
