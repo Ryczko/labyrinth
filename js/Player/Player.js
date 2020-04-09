@@ -67,7 +67,6 @@ class Player {
 
 		this.countingInterval = setInterval(this.startCounting, 1000);
 
-
 		leaveBtn.addEventListener('click', this.handleLeaveMove);
 
 		roadFields.forEach((el) => {
@@ -124,8 +123,8 @@ class Player {
 
 				this.time = 30;
 
-				if (!this.win) this.changePlayer();
-				else newMessage('Bot', 'End of the game!');
+				// if (!this.win) this.changePlayer();
+				// else newMessage('Bot', 'End of the game!');
 			} else {
 				newMessage('Bot', 'No transition!');
 			}
@@ -337,6 +336,7 @@ class Player {
 
 					if (oldPostion[0].dataset.player !== undefined) {
 						if (oldPostion[0].dataset.player.length > 1) {
+							if (oldPostion[0].dataset.player.length === 2) oldPostion[0].classList.remove('morePlayers');
 							oldPostion[0].dataset.player = oldPostion[0].dataset.player.replace(id, '');
 						} else {
 							oldPostion[0].removeAttribute('data-player');
@@ -352,6 +352,7 @@ class Player {
 					if (newPosition[0].dataset.player === undefined) {
 						newPosition[0].dataset.player = `${id}`;
 					} else {
+						newPosition[0].classList.add('morePlayers');
 						newPosition[0].dataset.player += `${id}`;
 					}
 
@@ -365,6 +366,11 @@ class Player {
 		setTimeout(() => this.collectTreasure(arrPath), treasureAnimationTime);
 
 		if (this.isWin(arrPath[arrPath.length - 1])) return newMessage('Bot', `Congratulations, player ${id} wins!`);
+
+		setTimeout(() => {
+			if (!this.win) this.changePlayer();
+			else newMessage('Bot', 'End of the game!');
+		}, treasureAnimationTime);
 	};
 
 	collectTreasure = (arrPath) => {

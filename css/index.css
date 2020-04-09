@@ -60,11 +60,15 @@
   border-radius: 5px;
   top: 0;
   left: 0;
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (1fr)[2];
-      grid-template-columns: repeat(2, 1fr);
-  padding: .5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .board__road-field.replace {
@@ -99,6 +103,14 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
+}
+
+.morePlayers {
+  display: -ms-grid !important;
+  display: grid !important;
+  -ms-grid-columns: (1fr)[2] !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+  padding: .5rem !important;
 }
 
 .player {
