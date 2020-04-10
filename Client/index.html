@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="fontello/css/fontello.css">
 
     <title>Labyrinth</title>
+
+
+
+
+    <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+
+    <script type="module" defer src="js/index.js"></script>
 </head>
 
 <body>
@@ -123,13 +130,13 @@
                 </ul>
                 <form class="chat__form">
                     <input type="text" placeholder="enter message" class="chat__form__input">
-                    <button class="chat__form__button">Send</button>
+                    <button class="chat__form__button" type="submit">Send</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <script type="module" src="./js/index.js"></script>
+
 </body>
 
 </html>

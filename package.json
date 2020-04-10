@@ -1,0 +1,25 @@
+{
+  "name": "labyrinth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Server/server.js",
+  "scripts": {
+    "start": "nodemon Server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ryczko/labyrinth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ryczko/labyrinth/issues"
+  },
+  "homepage": "https://github.com/Ryczko/labyrinth#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  },
+  "dependencies": {
+    "socket.io": "^2.3.0"
+  }
+}
