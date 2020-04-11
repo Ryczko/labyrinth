@@ -1,13 +1,18 @@
+
+// const MovingField = require('../MovingField/MovingField.js');
+// const RandomTreasuresData = require('../Data/RandomTreasuresData')
+// const entryType = require('../Board/entryType.js')
+
 import MovingField from '../MovingField/MovingField.js';
 import { RandomTreasuresData } from '../Data/RandomTreasuresData.js';
 import { entryType } from './entryType.js'
 
 class Board {
-    constructor(roadFields) {
-        roadFields = [...document.querySelectorAll('.board__road-field')];
+    constructor() {
+        this.roadFields = [...document.querySelectorAll('.board__road-field')];
         this.entryType = entryType;
-        this.addDataRowsAndColumns(roadFields);
-        this.buildNewBoard(roadFields);
+        this.addDataRowsAndColumns(this.roadFields);
+        this.buildNewBoard(this.roadFields);
     }
 
     addDataRowsAndColumns = roadFields => {
@@ -45,7 +50,7 @@ class Board {
             }
         ];
 
-        treasuresRoadFields.forEach(el => el.style.backgroundImage = `url(../img/treasures/${el.dataset.item}.png), url(../img/roadSplit.png)`);
+        treasuresRoadFields.forEach(el => el.style.backgroundImage = `url(../Client/img/treasures/${el.dataset.item}.png), url(../Client/img/roadSplit.png)`);
 
         randomRoadFields.forEach(el => {
             const filtredOptionArray = optionArray.filter(el => el.number !== 0);
@@ -80,8 +85,8 @@ class Board {
                 }
             }
 
-            if (el.dataset.item === undefined) el.style.background = `url(../img/${fieldType}.png)`;
-            else el.style.background = `url(../img/treasures/${el.dataset.item}.png), url(../img/${fieldType}.png)`;
+            if (el.dataset.item === undefined) el.style.background = `url(../Client/img/${fieldType}.png)`;
+            else el.style.background = `url(../Client/img/treasures/${el.dataset.item}.png), url(../Client/img/${fieldType}.png)`;
 
             el.style.transform = `rotate(${fieldRotation}deg)`;
 
@@ -97,5 +102,4 @@ class Board {
 
 
 }
-
-export default Board;
+export default Board

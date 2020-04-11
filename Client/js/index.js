@@ -1,8 +1,11 @@
 import Board from './Board/Board.js';
-import Put from './Board/Put.js';
-import Start from './Start/Start.js';
-import { inicializeChat } from './Chat/chat.js';
+// import Put from './Board/Put.js';
+// import Start from './Start/Start.js';
+// import { inicializeChat } from './Chat/chat.js';
+
+
 import { newMessage } from './Chat/newMessage.js';
+import { copyBoard } from './Board/copyBoard.js';
 
 const socket = io('http://localhost:3000');
 const chatForm = document.querySelector('.chat__form');
@@ -16,26 +19,55 @@ newMessage('bot', `Dołączyłeś do gry`);
 socket.emit('new-user', name);
 
 socket.on('hello-message', (name) => {
-	newMessage('bot', `gracz ${name} dołącza do gry`);
+    newMessage('bot', `gracz ${name} dołącza do gry`);
 });
 
 socket.on('user-limit', (msg) => {
     alert(msg);
 });
+socket.on('user-disconnected', (name) => {
+    newMessage('bot', `${name} wyszedł z gry`);
+});
+
+
+
+
+
+
+
+socket.on('get-board', data => {
+    const PlayerBoard = new Board();
+    socket.emit('inicial-board', PlayerBoard);
+})
+
+
+socket.on('create-board', board => {
+
+    //copyBoard()
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 socket.on('chat-message', (message) => {
     const { name, text } = message;
 
-	newMessage(name, text);
-});
-
-socket.on('user-disconnected', (name) => {
-	newMessage('bot', `${name} wyszedł z gry`);
+    newMessage(name, text);
 });
 
 chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     const text = messageInput.value;
     const message = {
         name: name,
@@ -43,12 +75,12 @@ chatForm.addEventListener('submit', (e) => {
     };
 
     console.log(message);
-    
+
     newMessage('You', text);
 
     socket.emit('send-new-message', message);
-    
-	messageInput.value = '';
+
+    messageInput.value = '';
 });
 
 // //map initialization

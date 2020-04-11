@@ -1,3 +1,4 @@
+// const entryType = require('../Board/entryType.js')
 import { entryType } from '../Board/entryType.js'
 
 class MovingField {
@@ -11,7 +12,7 @@ class MovingField {
     }
 
     addMovingField = () => {
-        this.movingField.style.backgroundImage = `url(../img/${this.type}.png)`;
+        this.movingField.style.backgroundImage = `url(../Client/img/${this.type}.png)`;
         this.arrow.addEventListener('click', this.rotateMovingField);
         this.movingField.dataset.entry = entryType(this.type, this.rotate.toString())
     }
@@ -45,6 +46,6 @@ class MovingField {
     }
 }
 
-export default MovingField;
 
+export default MovingField
 

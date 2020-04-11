@@ -16,3 +16,4 @@ export const entryType = (type, rotation) => {
         else if (rotation === '180') return 'top,right,left';
     }
 }
+
