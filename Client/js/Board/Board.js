@@ -8,7 +8,7 @@ import { entryType } from './entryType.js';
 
 class Board {
 	constructor() {
-		this.roadFields = [ ...document.querySelectorAll('.board__road-field') ];
+		this.roadFields = [...document.querySelectorAll('.board__road-field')];
 		this.entryType = entryType;
 	}
 
@@ -31,7 +31,7 @@ class Board {
 		const randomRoadFields = roadFields.filter((el) => el.dataset.static === undefined);
 		const treasuresRoadFields = roadFields.filter((el) => el.dataset.item);
 
-		const rotationOptions = [ '-90', '0', '90', '180' ];
+		const rotationOptions = ['-90', '0', '90', '180'];
 
 		const optionArray = [
 			{
@@ -97,9 +97,9 @@ class Board {
 			el.dataset.entry = entryType(fieldType, fieldRotation);
 		});
 
-		const lastElement = optionArray.filter((el) => el.number === 1)[0].type;
+		this.lastElement = optionArray.filter((el) => el.number === 1)[0].type;
 
-		const movingField = new MovingField(lastElement);
+		const movingField = new MovingField(this.lastElement);
 	};
 
 	createNewBoard = () => {
@@ -109,7 +109,7 @@ class Board {
 	};
 
 	getBoardInfo = () => {
-		this.roadFields = [ ...document.querySelectorAll('.board__road-field') ];
+		this.roadFields = [...document.querySelectorAll('.board__road-field')];
 		let datas = [];
 		let styles = [];
 
@@ -124,42 +124,44 @@ class Board {
 			styles.push(styleObject);
 		});
 
-		return [ datas, styles ];
+		return [datas, styles, this.lastElement];
 	};
 
 	copyBoard = (info) => {
 		info[0].forEach((data, index) => {
-            const field = this.roadFields[index];
+			const field = this.roadFields[index];
 
 			const dataKeys = Object.keys(data);
-            const dataValues = Object.values(data);
+			const dataValues = Object.values(data);
 
 			dataKeys.forEach((el, index) => {
 				const name = el;
 				const value = dataValues[index];
 
-                field.setAttribute(`data-${name}`, value);				
-            });          
-        });
-        
-        info[1].forEach((styles, index) => {
-            const field = this.roadFields[index];
+				field.setAttribute(`data-${name}`, value);
+			});
+		});
+
+		info[1].forEach((styles, index) => {
+			const field = this.roadFields[index];
 
 			const styleKeys = Object.keys(styles);
-            const styleValues = Object.values(styles);
+			const styleValues = Object.values(styles);
 
 			styleKeys.forEach((el, index) => {
 				const name = el;
 				const value = styleValues[index];
 
-                if (name === 'background') {
-                    field.style.background = value;
-                } 
-                else if (name === 'transform') {
-                    field.style.transform = value;
-                }
-            });          
+				if (name === 'background') {
+					field.style.background = value;
+				}
+				else if (name === 'transform') {
+					field.style.transform = value;
+				}
+			});
 		});
+
+		const movingField = new MovingField(info[2]);
 	};
 
 	randomNumber = (range) => Math.floor(Math.random() * range.length);
