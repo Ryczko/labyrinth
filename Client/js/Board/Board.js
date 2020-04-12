@@ -11,11 +11,11 @@ class Board {
     constructor() {
         this.roadFields = [...document.querySelectorAll('.board__road-field')];
         this.entryType = entryType;
-        this.addDataRowsAndColumns(this.roadFields);
-        this.buildNewBoard(this.roadFields);
+
     }
 
-    addDataRowsAndColumns = roadFields => {
+    addDataRowsAndColumns = () => {
+        const { roadFields } = this
         let index = 0;
 
         for (let i = 0; i < 7; i++) {
@@ -27,8 +27,8 @@ class Board {
         }
     }
 
-    buildNewBoard = roadFields => {
-        const { randomNumber, entryType } = this;
+    buildNewBoard = () => {
+        const { randomNumber, entryType, roadFields } = this;
 
         const randomRoadFields = roadFields.filter(el => el.dataset.static === undefined);
         const treasuresRoadFields = roadFields.filter(el => el.dataset.item);
@@ -96,6 +96,39 @@ class Board {
         const lastElement = optionArray.filter(el => el.number === 1)[0].type;
 
         const movingField = new MovingField(lastElement);
+    }
+
+    createNewBoard = () => {
+        this.addDataRowsAndColumns();
+        this.buildNewBoard();
+        return this.getBoardInfo();
+    }
+
+    getBoardInfo = () => {
+        this.roadFields = [...document.querySelectorAll('.board__road-field')];
+        let datas = [];
+        let styles = [];
+
+
+        this.roadFields.forEach(el => {
+            datas.push(Object.assign({}, el.dataset));
+
+            const styleObject = {
+                background: getComputedStyle(el).getPropertyValue('background'),
+                transform: getComputedStyle(el).getPropertyValue('transform')
+            }
+
+            styles.push(styleObject)
+        })
+
+        return [datas, styles]
+    }
+
+
+
+    copyBoard = (info) => {
+
+        //tutaj
     }
 
     randomNumber = range => Math.floor(Math.random() * range.length);

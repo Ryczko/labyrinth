@@ -2,7 +2,8 @@ const io = require('socket.io')(3000);
 
 const users = {};
 
-let boardObject = null;
+let boardInfo = null;
+
 
 io.on('connection', (socket) => {
 
@@ -19,7 +20,7 @@ io.on('connection', (socket) => {
             }
             else {
 
-                socket.emit('create-board', boardObject)
+                socket.emit('create-board', boardInfo)
 
             }
 
@@ -32,7 +33,7 @@ io.on('connection', (socket) => {
 
         socket.on('inicial-board', board => {
 
-            boardObject = board;
+            boardInfo = board;
         })
 
         socket.on('send-new-message', (message) => {

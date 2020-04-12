@@ -5,7 +5,7 @@ import Board from './Board/Board.js';
 
 
 import { newMessage } from './Chat/newMessage.js';
-import { copyBoard } from './Board/copyBoard.js';
+
 
 const socket = io('http://localhost:3000');
 const chatForm = document.querySelector('.chat__form');
@@ -36,14 +36,19 @@ socket.on('user-disconnected', (name) => {
 
 
 socket.on('get-board', data => {
-    const PlayerBoard = new Board();
-    socket.emit('inicial-board', PlayerBoard);
+    const playerBoard = new Board();
+
+    const boardInfo = playerBoard.createNewBoard()
+
+    socket.emit('inicial-board', boardInfo);
 })
 
 
 socket.on('create-board', board => {
+    const playerBoard = new Board();
 
-    //copyBoard()
+    playerBoard.copyBoard(board)
+
 })
 
 
