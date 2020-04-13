@@ -1,6 +1,6 @@
 import Board from './Board/Board.js';
-// import Put from './Board/Put.js';
-// import Start from './Start/Start.js';
+import Put from './Board/Put.js';
+import Start from './Start/Start.js';
 // import { inicializeChat } from './Chat/chat.js';
 
 import { newMessage } from './Chat/newMessage.js';
@@ -43,6 +43,35 @@ socket.on('create-board', (board) => {
 
 	playerBoard.copyBoard(board);
 });
+
+//start game
+
+socket.on('start-game', (numberOfUsers) => {
+	const put = new Put();
+	const start = new Start(numberOfUsers, put);
+
+	const playersFields = [...document.querySelectorAll('.pawn')];
+
+	const pawnColors = [];
+	
+	playersFields.forEach(el => {
+		pawnColors.push(el.style.background);
+	});
+
+	const playersInfo = {
+		colors: pawnColors,
+		cards: start.allCards
+	}
+
+	socket.emit('players-info', (playersInfo));
+});
+
+socket.on('players-start-data', (playerInfo) => {
+	const { colors, cards } = playerInfo;
+
+	console.log(colors);
+	console.log(cards);
+})
 
 //chat
 

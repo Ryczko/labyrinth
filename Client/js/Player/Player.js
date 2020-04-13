@@ -41,7 +41,7 @@ class Player {
 
 		//random color
 		this.playerSkin = `rgb(${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)})`;
-		player.style.backgroundColor = this.playerSkin
+		player.style.background = this.playerSkin
 
 		playerStartPositions[id - 1].append(player);
 

@@ -7,6 +7,7 @@ class Start {
 		this.put = put;
 		this.chat = this.playerNumber = playerNumber;
 		this.treasures = this.shuffle(AllTreasuresData);
+		this.allCards = [];
 		this.dealCards(this.playerNumber, this.treasures);
 		this.playersArray;
 		this.activePlayer = 0;
@@ -30,6 +31,8 @@ class Start {
 			playersArray[i] = new Player(playerCards, show, (id = i + 1), this.roundManager, this.put);
 			newMessage(`Bot`, `Welcome to game player ${id}`);
 			this.playersArray = playersArray;
+
+			this.allCards.push(playerCards);
 		}
 	};
 
