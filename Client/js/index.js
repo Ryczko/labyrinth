@@ -1,15 +1,16 @@
 import Board from './Board/Board.js';
 import Put from './Board/Put.js';
 import Start from './Start/Start.js';
-// import { inicializeChat } from './Chat/chat.js';
-
+import { createCards } from './Cards/Cards.js'
 import { newMessage } from './Chat/newMessage.js';
+
 
 const socket = io('http://localhost:3000');
 const chatForm = document.querySelector('.chat__form');
 const messageInput = document.querySelector('.chat__form__input');
 
-//handle users
+
+//users connecting and disconnecting
 
 const name = prompt('twoje imie');
 newMessage('bot', `Dołączyłeś do gry`);
@@ -28,32 +29,39 @@ socket.on('user-disconnected', (name) => {
 	newMessage('bot', `${name} wyszedł z gry`);
 });
 
-//init board
 
+
+
+
+//Board init and coping
 socket.on('get-board', () => {
 	const playerBoard = new Board();
-
 	const boardInfo = playerBoard.createNewBoard();
-
 	socket.emit('init-board', boardInfo);
 });
 
 socket.on('create-board', (board) => {
 	const playerBoard = new Board();
-
 	playerBoard.copyBoard(board);
 });
 
-//start game
+
+
+
+//starting game
 
 socket.on('start-game', (numberOfUsers) => {
 	const put = new Put();
 	const start = new Start(numberOfUsers, put);
+	start.dealCards(start.playerNumber);
 
+	start.createPlayers(numberOfUsers);
+
+	createCards(start.allCards[start.allCards.length - 1]);
 	const playersFields = [...document.querySelectorAll('.pawn')];
 
 	const pawnColors = [];
-	
+
 	playersFields.forEach(el => {
 		pawnColors.push(el.style.background);
 	});
@@ -67,17 +75,27 @@ socket.on('start-game', (numberOfUsers) => {
 });
 
 socket.on('players-start-data', (playerInfo) => {
-	const { colors, cards } = playerInfo;
+	const { colors, cards, allCards } = playerInfo;
+
+	const put = new Put();
+	const start = new Start(colors.length, put);
+	start.allCards = allCards;
+	createCards(cards);
+
+	start.createPlayers(colors.length, colors);
 
 	console.log(colors);
 	console.log(cards);
 })
 
-//chat
 
+
+
+
+
+//chat
 socket.on('chat-message', (message) => {
 	const { name, text } = message;
-
 	newMessage(name, text);
 });
 

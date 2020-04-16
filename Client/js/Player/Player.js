@@ -1,26 +1,28 @@
-import { createCards, changeCard } from '../Cards/Cards.js';
+import { changeCard } from '../Cards/Cards.js';
 import { newMessage } from '../Chat/newMessage.js'
 class Player {
-	constructor(cards, show, id, roundMenager, put) {
+	constructor(cards, show, id, roundMenager, put, color = null) {
 		this.roadFields = [...document.querySelectorAll('.board__road-field')];
 		this.cards = cards;
 		this.id = id;
 		this.startPosition = {};
+		this.playerSkin = color;
 		this.leaveBtn = document.getElementById('button-leave');
 		this.pawn = null;
 
 		this.put = put;
 
 		this.changePlayer = roundMenager;
-		if (show) createCards(this.cards);
-		this.inicialPlayersPosition();
-		if (show) this.move(id);
 
 		this.timer = document.querySelector('.player__timer');
 		this.time = 30;
 
-		this.playerSkin;
+
 		this.win = false;
+
+
+		this.inicialPlayersPosition();
+		if (show) this.move(id);
 	}
 
 	inicialPlayersPosition = () => {
@@ -40,8 +42,13 @@ class Player {
 		player.classList.add('pawn');
 
 		//random color
-		this.playerSkin = `rgb(${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)})`;
-		player.style.background = this.playerSkin
+
+		if (this.playerSkin == null) {
+			this.playerSkin = `rgb(${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)}, ${Math.floor((Math.random() * 255) + 1)})`;
+
+		}
+
+		player.style.background = this.playerSkin;
 
 		playerStartPositions[id - 1].append(player);
 
@@ -118,7 +125,7 @@ class Player {
 
 				clearInterval(this.countingInterval);
 				moveAnimation(path, id);
-	
+
 				leaveBtn.removeEventListener('click', this.handleLeaveMove);
 
 				this.time = 30;
@@ -137,8 +144,8 @@ class Player {
 		console.log(arrPath)
 
 		const xPlayer = parseInt(arrPath[0]),
-			  yPlayer = parseInt(arrPath[1]);
-		
+			yPlayer = parseInt(arrPath[1]);
+
 		if (cards.length === 0 && xPlayer === parseInt(startPosition.row) && yPlayer === parseInt(startPosition.column)) {
 			this.win = true;
 			return true;
@@ -381,31 +388,31 @@ class Player {
 			const currentField = roadFields.filter(
 				(el) => el.dataset.row === currentPosition[0] && el.dataset.column === currentPosition[1]
 			);
-	
+
 			if (currentField[0].dataset.item !== undefined) {
 				const findingTreasure = this.cards[this.cards.length - 1].name;
 				const onFieldTreasure = currentField[0].dataset.item;
-	
+
 				if (findingTreasure === onFieldTreasure) {
 					changeCard(this.cards);
-	
+
 					currentField[0].removeAttribute('data-item');
-	
+
 					const currentFieldBackgrounds = currentField[0].style.backgroundImage.split(',');
 					const newBackground = currentFieldBackgrounds.filter((el) => !el.includes('treasures'));
 					let backgroundString = '';
-	
+
 					newBackground.forEach((el) => {
 						backgroundString += el + ', ';
 					});
-	
+
 					currentField[0].style.backgroundImage = `${newBackground}`;
-	
+
 					newMessage('Bot', `Player ${this.id} collected the ${onFieldTreasure}!`);
 					this.showFinish();
 				}
 			}
-		} 
+		}
 	};
 }
 

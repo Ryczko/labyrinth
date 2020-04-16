@@ -1,45 +1,60 @@
 import { AllTreasuresData } from '../Data/AllTreasuresData.js';
 import Player from '../Player/Player.js';
-import { newMessage } from '../Chat/newMessage.js';
+
 
 class Start {
-	constructor(playerNumber, put) {
+	constructor(playerNumber, put, colors = null) {
 		this.put = put;
-		this.chat = this.playerNumber = playerNumber;
-		this.treasures = this.shuffle(AllTreasuresData);
+		this.colors = colors
+		this.playersArray = [];
+		this.playerNumber = playerNumber
+
 		this.allCards = [];
-		this.dealCards(this.playerNumber, this.treasures);
-		this.playersArray;
+
 		this.activePlayer = 0;
 	}
 
-	dealCards = (playerNumber, treasures) => {
+	dealCards = (playerNumber) => {
+		const treasures = this.shuffle(AllTreasuresData)
 		const cardAmount = treasures.length / playerNumber;
-		let playersArray = [];
-		let id = 0;
-		let active = true;
 
+		for (let i = 0; i < playerNumber; i++) {
+
+			const playerCards = treasures.slice(i * cardAmount, cardAmount * (i + 1));
+			this.allCards.push(playerCards);
+
+		}
+	};
+
+	createPlayers = (playerNumber, colors = null) => {
+
+		let active = true;
 		let show = true;
+
 
 		for (let i = 0; i < playerNumber; i++) {
 			if (i !== 0) {
 				show = false;
 				active = false;
 			} //chwilowo, by renederować karty tylko dla pierwszego gracza
-			const playerCards = treasures.slice(i * cardAmount, cardAmount * (i + 1));
 
-			playersArray[i] = new Player(playerCards, show, (id = i + 1), this.roundManager, this.put);
-			newMessage(`Bot`, `Welcome to game player ${id}`);
-			this.playersArray = playersArray;
 
-			this.allCards.push(playerCards);
+			this.playersArray[i] = new Player(this.allCards[i], show, i + 1, this.roundManager, this.put,
+				(colors == null) ? null : colors[i]);
+
 		}
-	};
+	}
+
+
+
+	startOthers = (colors) => {
+
+	}
 
 	shuffle = (a) => {
 		for (let i = a.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
-			[ a[i], a[j] ] = [ a[j], a[i] ];
+			[a[i], a[j]] = [a[j], a[i]];
 		}
 		return a;
 	};

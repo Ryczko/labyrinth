@@ -1,7 +1,6 @@
 const io = require('socket.io')(3000);
 
 const users = {};
-
 let boardInfo = null;
 
 io.on('connection', (socket) => {
@@ -12,17 +11,17 @@ io.on('connection', (socket) => {
 			console.log(users);
 
 			socket.broadcast.emit('hello-message', name);
-            
-            if (Object.keys(users).length === 1) {
+
+			if (Object.keys(users).length === 1) {
 				socket.emit('get-board');
 			} else {
 				socket.emit('create-board', boardInfo);
-            }
-			
+			}
+
 			//start the game
-            if (Object.keys(users).length === 2) {
+			if (Object.keys(users).length === 2) {
 				socket.emit('start-game', Object.keys(users).length);
-            }
+			}
 		});
 
 		socket.on('init-board', (board) => {
@@ -36,7 +35,8 @@ io.on('connection', (socket) => {
 				if (index !== usersKeys.length - 1) {
 					const playerInfo = {
 						colors: playersInfo.colors,
-						cards: playersInfo.cards[index]
+						cards: playersInfo.cards[index],
+						allCards: playersInfo.cards
 					}
 
 					io.to(`${el}`).emit('players-start-data', (playerInfo));
@@ -49,17 +49,17 @@ io.on('connection', (socket) => {
 		});
 
 		socket.on('disconnect', () => {
-            socket.broadcast.emit('user-disconnected', users[socket.id]);
-            
+			socket.broadcast.emit('user-disconnected', users[socket.id]);
+
 			delete users[socket.id];
 
 			console.log(users);
 		});
 	} else {
-        const msg = 'osiągnięto limit graczy';
-        
-        console.log(msg);
-        
+		const msg = 'osiągnięto limit graczy';
+
+		console.log(msg);
+
 		socket.emit('user-limit', msg);
 	}
 });
