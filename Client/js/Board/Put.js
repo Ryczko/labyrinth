@@ -1,22 +1,40 @@
 import { newMessage } from '../Chat/newMessage.js'
 
+
+const socket = io('http://localhost:3000');
+
+
 class Put {
 
     constructor() {
         this.arrows = document.querySelectorAll('.board-arrows');
         this.movingField = document.querySelector('.player__moving-field__field');
         this.size = this.movingField.offsetWidth + 1;
-        this.arrows.forEach(el => el.addEventListener('click', this.slide));
+
         this.isMoved = false;
     }
 
-    slide = (e) => {
+    addListeneres = () => {
+        this.arrows.forEach(el => el.addEventListener('click', this.handleClick))
+    }
+
+    handleClick = (e) => {
+        const putData = {
+            row: e.target.dataset.row,
+            column: e.target.dataset.column,
+        }
+        this.slide(putData);
+        socket.emit('put-element', putData);
+    }
+
+
+    slide = (putData) => {
 
         if (this.isMoved) return newMessage('Bot', 'Field has already been moved!')
 
         let info = {
-            row: e.target.dataset.row,
-            column: e.target.dataset.column,
+            row: putData.row,
+            column: putData.column,
             mainDirection: 'row',
             secondDirection: 'column',
             topOrLeft: 'left',
@@ -32,7 +50,7 @@ class Put {
         }
         this.arrows.forEach(el => {
             this.toggleArrowClasses(el);
-            el.removeEventListener('click', this.slide);
+            el.removeEventListener('click', this.handleClick);
             el.style.display = ""
         })
 
@@ -48,10 +66,18 @@ class Put {
         let allLine = document.querySelectorAll(`.board div[data-${mainDirection}="${info[mainDirection]}"]`);
         allLine.forEach(el => el.style[topOrLeft] = `${transformValue * (this.size)}px`);
 
-        this.putMovingElement(e.target, allLine, secondDirection, transformValue)
+        this.putMovingElement(putData, allLine, secondDirection, transformValue)
     }
 
-    putMovingElement = (element, line, direction, transformValue) => {
+    putMovingElement = (putData, line, direction, transformValue) => {
+
+        console.log(document.querySelectorAll(`.board-arrows`));
+
+        const elementArr = [...document.querySelectorAll(`.board-arrows`)].filter(el => {
+            return el.dataset.row == putData.row && el.dataset.column == putData.column;
+        });
+
+        const element = elementArr[0];
 
         const last = (transformValue == 1) ? 6 : 0;
         const lastElement = [...line].filter(el => el.dataset[direction] == last);
@@ -105,7 +131,7 @@ class Put {
 
         this.arrows.forEach(el => {
             this.toggleArrowClasses(el);
-            el.addEventListener('click', this.slide)
+            // el.addEventListener('click', this.slide)
         });
 
         element.removeAttribute('data-entry')

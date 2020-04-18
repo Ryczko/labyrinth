@@ -20,9 +20,17 @@ io.on('connection', (socket) => {
 
 			//start the game
 			if (Object.keys(users).length === 2) {
-				socket.emit('start-game', Object.keys(users).length);
+				socket.emit('start-game', Object.keys(users).length);//zaczekaj
 			}
 		});
+
+		socket.on('start-turn', (isPut) => {
+			if (isPut) io.to(`${Object.keys(users)[0]}`).emit('players-move');
+		})
+
+		socket.on('put-element', putData => {
+			socket.broadcast.emit('send-put-element', putData)
+		})
 
 		socket.on('init-board', (board) => {
 			boardInfo = board;

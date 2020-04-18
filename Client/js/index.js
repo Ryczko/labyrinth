@@ -9,6 +9,7 @@ const socket = io('http://localhost:3000');
 const chatForm = document.querySelector('.chat__form');
 const messageInput = document.querySelector('.chat__form__input');
 
+let put = null;
 
 //users connecting and disconnecting
 
@@ -51,7 +52,7 @@ socket.on('create-board', (board) => {
 //starting game
 
 socket.on('start-game', (numberOfUsers) => {
-	const put = new Put();
+	put = new Put();
 	const start = new Start(numberOfUsers, put);
 	start.dealCards(start.playerNumber);
 
@@ -77,7 +78,7 @@ socket.on('start-game', (numberOfUsers) => {
 socket.on('players-start-data', (playerInfo) => {
 	const { colors, cards, allCards } = playerInfo;
 
-	const put = new Put();
+	put = new Put();
 	const start = new Start(colors.length, put);
 	start.allCards = allCards;
 	createCards(cards);
@@ -86,11 +87,21 @@ socket.on('players-start-data', (playerInfo) => {
 
 	console.log(colors);
 	console.log(cards);
+
+	socket.emit('start-turn', true);
 })
 
+//round menager
 
+socket.on('players-move', () => {
 
+	put.addListeneres();
+	console.log('ruch gracza')
+})
 
+socket.on('send-put-element', putData => {
+	put.slide(putData)
+})
 
 
 //chat
