@@ -1,6 +1,6 @@
 // const entryType = require('../Board/entryType.js')
 import { entryType } from '../Board/entryType.js'
-
+const socket = io('http://localhost:3000');
 class MovingField {
 
     constructor(type) {
@@ -13,9 +13,14 @@ class MovingField {
 
     addMovingField = () => {
         this.movingField.style.backgroundImage = `url(../Client/img/${this.type}.png)`;
-        this.arrow.addEventListener('click', this.rotateMovingField);
+        this.arrow.addEventListener('click', () => {
+            socket.emit('rotate-element');
+            //this.rotateMovingField
+
+        });
         this.movingField.dataset.entry = entryType(this.type, this.rotate.toString())
     }
+
 
     rotateMovingField = () => {
 

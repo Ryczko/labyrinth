@@ -23,7 +23,7 @@ class Put {
             row: e.target.dataset.row,
             column: e.target.dataset.column,
         }
-        this.slide(putData);
+        //this.slide(putData);
         socket.emit('put-element', putData);
     }
 
@@ -105,6 +105,8 @@ class Put {
 
                 newEl.dataset.player = oldPlayerData;
             }
+
+            document.querySelector('.player__moving-field__arrow').classList.add('hide');
 
         }, 800)
 

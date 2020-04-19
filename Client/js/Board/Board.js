@@ -10,6 +10,7 @@ class Board {
 	constructor() {
 		this.roadFields = [...document.querySelectorAll('.board__road-field')];
 		this.entryType = entryType;
+		this.movingField = null;
 	}
 
 	addDataRowsAndColumns = () => {
@@ -99,7 +100,7 @@ class Board {
 
 		this.lastElement = optionArray.filter((el) => el.number === 1)[0].type;
 
-		const movingField = new MovingField(this.lastElement);
+		this.movingField = new MovingField(this.lastElement);
 	};
 
 	createNewBoard = () => {
@@ -161,7 +162,7 @@ class Board {
 			});
 		});
 
-		const movingField = new MovingField(info[2]);
+		this.movingField = new MovingField(info[2]);
 	};
 
 	randomNumber = (range) => Math.floor(Math.random() * range.length);

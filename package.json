@@ -5,7 +5,7 @@
   "main": "Server/server.js",
   "scripts": {
     "scss:build": "node-sass --output-style compressed -o ./Client/css ./Client/scss",
-    "scss:watch": "onchange -v \"./Client/scss/index.scss\" -- npm run scss:build",
+    "scss:watch": "onchange -v \"./Client/scss/**/*.scss\" -- npm run scss:build",
     "server:start": "nodemon Server/server.js",
     "start": "parallelshell \"npm run server:start\" \"npm run scss:watch\""
   },

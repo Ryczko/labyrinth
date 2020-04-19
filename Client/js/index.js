@@ -9,14 +9,22 @@ const socket = io('http://localhost:3000');
 const chatForm = document.querySelector('.chat__form');
 const messageInput = document.querySelector('.chat__form__input');
 
-let put = null;
+let put = null,
+	playerBoard = null;
 
 //users connecting and disconnecting
 
-const name = prompt('twoje imie');
-newMessage('bot', `Dołączyłeś do gry`);
+let name = prompt('twoje imie');
+
 
 socket.emit('new-user', name);
+
+socket.on('wrong-name', () => {
+	name = prompt('twoje imie');
+	socket.emit('new-user', name);
+})
+
+newMessage('bot', `Dołączyłeś do gry`);
 
 socket.on('hello-message', (name) => {
 	newMessage('bot', `gracz ${name} dołącza do gry`);
@@ -36,13 +44,13 @@ socket.on('user-disconnected', (name) => {
 
 //Board init and coping
 socket.on('get-board', () => {
-	const playerBoard = new Board();
+	playerBoard = new Board();
 	const boardInfo = playerBoard.createNewBoard();
 	socket.emit('init-board', boardInfo);
 });
 
 socket.on('create-board', (board) => {
-	const playerBoard = new Board();
+	playerBoard = new Board();
 	playerBoard.copyBoard(board);
 });
 
@@ -95,12 +103,18 @@ socket.on('players-start-data', (playerInfo) => {
 
 socket.on('players-move', () => {
 
+	document.querySelector('.player__moving-field__arrow').classList.remove('hide');
+
+
 	put.addListeneres();
 	console.log('ruch gracza')
 })
 
 socket.on('send-put-element', putData => {
 	put.slide(putData)
+})
+socket.on('rotate', () => {
+	playerBoard.movingField.rotateMovingField();
 })
 
 

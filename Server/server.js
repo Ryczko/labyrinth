@@ -5,12 +5,17 @@ let boardInfo = null;
 
 io.on('connection', (socket) => {
 	if (Object.keys(users).length < 4) {
+
 		socket.on('new-user', (name) => {
-			users[socket.id] = name;
+			if (name == null) name = '';
+			if (name !== '') {
+				users[socket.id] = name;
+				socket.broadcast.emit('hello-message', name);
+			} else {
+				return socket.emit('wrong-name');
+			}
 
 			console.log(users);
-
-			socket.broadcast.emit('hello-message', name);
 
 			if (Object.keys(users).length === 1) {
 				socket.emit('get-board');
@@ -30,6 +35,9 @@ io.on('connection', (socket) => {
 
 		socket.on('put-element', putData => {
 			socket.broadcast.emit('send-put-element', putData)
+		})
+		socket.on('rotate-element', () => {
+			socket.broadcast.emit('rotate')
 		})
 
 		socket.on('init-board', (board) => {
