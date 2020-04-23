@@ -1,5 +1,7 @@
 import { changeCard } from '../Cards/Cards.js';
-import { newMessage } from '../Chat/newMessage.js'
+import { newMessage } from '../Chat/newMessage.js';
+const socket = io('http://localhost:3000');
+
 class Player {
 	constructor(cards, show, id, roundMenager, put, color = null) {
 		this.roadFields = [...document.querySelectorAll('.board__road-field')];
@@ -12,7 +14,7 @@ class Player {
 
 		this.put = put;
 
-		this.changePlayer = roundMenager;
+		// this.changePlayer = roundMenager;
 
 		this.timer = document.querySelector('.player__timer');
 		this.time = 30;
@@ -22,7 +24,7 @@ class Player {
 
 
 		this.inicialPlayersPosition();
-		if (show) this.move(id);
+		//if (show) this.move(id);
 	}
 
 	inicialPlayersPosition = () => {
@@ -55,24 +57,14 @@ class Player {
 		this.pawn = player;
 	};
 
-	startCounting = () => {
-		let { put, timer } = this;
-		if (this.time === 0) {
-			put.isMoved = true;
-			this.handleLeaveMove();
-			this.time = 30;
 
-		}
-		this.time--;
-		timer.textContent = this.time;
-	}
 
 	move = (id) => {
 		const { roadFields, leaveBtn } = this;
 
 		newMessage('Bot', `Player's turn number ${id}`, this.playerSkin);
 
-		this.countingInterval = setInterval(this.startCounting, 1000);
+	
 
 		leaveBtn.addEventListener('click', this.handleLeaveMove);
 
@@ -95,11 +87,13 @@ class Player {
 				el.removeEventListener('click', this.onClick);
 			});
 
-			clearInterval(this.countingInterval);
-			this.time = 30;
+			// clearInterval(this.countingInterval);
+			// this.time = 30;
 
-			if (!this.win) this.changePlayer();
-			else newMessage('Bot', 'End of the game!');
+
+			socket.emit('next-player', this.id);
+			// if (!this.win) this.changePlayer();
+			// else newMessage('Bot', 'End of the game!');
 		} else {
 			newMessage('Bot', 'In first put the block!')
 		}
@@ -124,11 +118,16 @@ class Player {
 				});
 
 				clearInterval(this.countingInterval);
-				moveAnimation(path, id);
+				//moveAnimation(path, id);
+
+				// const moveAnimationData = {
+				// 	path: path
+				// }
+				socket.emit('move-animation', {path,id});
 
 				leaveBtn.removeEventListener('click', this.handleLeaveMove);
 
-				this.time = 30;
+				// this.time = 30;
 
 				// if (!this.win) this.changePlayer();
 				// else newMessage('Bot', 'End of the game!');
@@ -140,8 +139,6 @@ class Player {
 
 	isWin = (arrPath) => {
 		const { cards, startPosition } = this;
-
-		console.log(arrPath)
 
 		const xPlayer = parseInt(arrPath[0]),
 			yPlayer = parseInt(arrPath[1]);
@@ -374,10 +371,10 @@ class Player {
 
 		if (this.isWin(arrPath[arrPath.length - 1])) return newMessage('Bot', `Congratulations, player ${id} wins!`);
 
-		setTimeout(() => {
-			if (!this.win) this.changePlayer();
-			else newMessage('Bot', 'End of the game!');
-		}, treasureAnimationTime);
+		// setTimeout(() => {
+		// 	if (!this.win) this.changePlayer();
+		// 	else newMessage('Bot', 'End of the game!');
+		// }, treasureAnimationTime);
 	};
 
 	collectTreasure = (arrPath) => {

@@ -29,6 +29,7 @@ io.on('connection', (socket) => {
 			}
 		});
 
+		//co to kurwa jest xd
 		socket.on('start-turn', (isPut) => {
 			if (isPut) io.to(`${Object.keys(users)[0]}`).emit('players-move');
 		})
@@ -59,6 +60,25 @@ io.on('connection', (socket) => {
 				}
 			});
 		})
+
+
+
+		socket.on('move-animation',data=>{
+			socket.broadcast.emit('move-player',data)
+		})
+
+		socket.on('next-player', activePlayer => {
+			const usersKeys = Object.keys(users);
+			
+			io.to(usersKeys[activePlayer]).emit('players-move');
+		})
+
+		// socket.on('leave-move', (id) => {
+		// 	const usersKeys = Object.keys(users);
+			
+		// 	io.to(usersKeys[id]).emit('players-move');
+		// })
+
 
 		socket.on('send-new-message', (message) => {
 			socket.broadcast.emit('chat-message', message);
