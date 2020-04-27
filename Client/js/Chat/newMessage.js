@@ -1,4 +1,4 @@
-export const newMessage = (who, message, playerSkin = null) => {
+export const newMessage = (who = 'Bot', message, playerSkin = null) => {
 
     const chat = document.querySelector('.chat__messages');
 

@@ -23,8 +23,7 @@ class Put {
             row: e.target.dataset.row,
             column: e.target.dataset.column,
         }
-        //this.slide(putData);
-       
+
         socket.emit('put-element', putData);
     }
 
@@ -69,7 +68,7 @@ class Put {
         allLine.forEach(el => el.style[topOrLeft] = `${transformValue * (this.size)}px`);
 
         this.putMovingElement(putData, allLine, secondDirection, transformValue)
-        
+
     }
 
     putMovingElement = (putData, line, direction, transformValue) => {
@@ -104,7 +103,7 @@ class Put {
                 })
 
                 newEl.dataset.player = oldPlayerData;
-                this.isMoved=false;
+                // this.isMoved=false;
             }
 
             document.querySelector('.player__moving-field__arrow').classList.add('hide');
@@ -139,7 +138,7 @@ class Put {
 
         element.removeAttribute('data-entry')
         element.style.display = '';
-        this.isMoved = true;
+        //this.isMoved = true;
     }
 
     replaceAllLine(line) {

@@ -3,6 +3,8 @@ const io = require('socket.io')(3000);
 const users = {};
 let boardInfo = null;
 
+
+
 io.on('connection', (socket) => {
 	if (Object.keys(users).length < 4) {
 
@@ -30,9 +32,9 @@ io.on('connection', (socket) => {
 		});
 
 		//co to kurwa jest xd
-		socket.on('start-turn', (isPut) => {
-			if (isPut) io.to(`${Object.keys(users)[0]}`).emit('players-move');
-		})
+		// socket.on('start-turn', (isPut) => {
+		// 	if (isPut) io.to(`${Object.keys(users)[0]}`).emit('players-move');
+		// })
 
 		socket.on('put-element', putData => {
 			socket.broadcast.emit('send-put-element', putData)
@@ -59,25 +61,36 @@ io.on('connection', (socket) => {
 					io.to(`${el}`).emit('players-start-data', (playerInfo));
 				}
 			});
+			io.emit('change-player', Object.values(users), true)
+			io.to(`${Object.keys(users)[0]}`).emit('players-move');
 		})
 
 
 
-		socket.on('move-animation',data=>{
-			socket.broadcast.emit('move-player',data)
-		})
+		socket.on('move-animation', data => {
+			console.log(users)
+			socket.broadcast.emit('move-player', data);
+			socket.broadcast.emit('change-player', Object.values(users));
 
-		socket.on('next-player', activePlayer => {
 			const usersKeys = Object.keys(users);
-			
-			io.to(usersKeys[activePlayer]).emit('players-move');
+
+			console.log(data.id)
+			console.log(usersKeys)
+			if (data.id === usersKeys.length) data.id = 0;
+
+			io.to(usersKeys[data.id]).emit('players-move');
+
 		})
 
-		// socket.on('leave-move', (id) => {
-		// 	const usersKeys = Object.keys(users);
-			
-		// 	io.to(usersKeys[id]).emit('players-move');
-		// })
+		socket.on('leave-move', (id) => {
+			socket.broadcast.emit('change-player', Object.values(users));
+
+			const usersKeys = Object.keys(users);
+			if (id === usersKeys.length) id = 0;
+			console.log('wykonuje')
+			io.to(usersKeys[id]).emit('players-move');
+
+		})
 
 
 		socket.on('send-new-message', (message) => {

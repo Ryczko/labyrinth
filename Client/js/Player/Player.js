@@ -14,17 +14,12 @@ class Player {
 
 		this.put = put;
 
-		// this.changePlayer = roundMenager;
-
 		this.timer = document.querySelector('.player__timer');
 		this.time = 30;
 
-
 		this.win = false;
 
-
 		this.inicialPlayersPosition();
-		//if (show) this.move(id);
 	}
 
 	inicialPlayersPosition = () => {
@@ -62,9 +57,9 @@ class Player {
 	move = (id) => {
 		const { roadFields, leaveBtn } = this;
 
-		newMessage('Bot', `Player's turn number ${id}`, this.playerSkin);
+		//newMessage('Bot', `Player's turn number ${id}`, this.playerSkin);
 
-	
+
 
 		leaveBtn.addEventListener('click', this.handleLeaveMove);
 
@@ -86,12 +81,8 @@ class Player {
 			roadFields.forEach((el) => {
 				el.removeEventListener('click', this.onClick);
 			});
-
-			// clearInterval(this.countingInterval);
-			// this.time = 30;
-
-
-			socket.emit('next-player', this.id);
+			console.log('wyslijd')
+			socket.emit('leave-move', this.id);
 			// if (!this.win) this.changePlayer();
 			// else newMessage('Bot', 'End of the game!');
 		} else {
@@ -117,13 +108,10 @@ class Player {
 					el.removeEventListener('click', this.onClick);
 				});
 
-				clearInterval(this.countingInterval);
-				//moveAnimation(path, id);
 
-				// const moveAnimationData = {
-				// 	path: path
-				// }
-				socket.emit('move-animation', {path,id});
+
+
+				socket.emit('move-animation', { path, id });
 
 				leaveBtn.removeEventListener('click', this.handleLeaveMove);
 
