@@ -12,13 +12,11 @@ class Player {
     this.playerSkin = color;
     this.leaveBtn = document.getElementById("button-leave");
     this.pawn = null;
-
     this.put = put;
-
     this.win = false;
-
     this.inicialPlayersPosition();
   }
+
 
   inicialPlayersPosition = () => {
     const { id, roadFields } = this;
@@ -70,6 +68,14 @@ class Player {
   onClick = (e) => {
     this.handleRoadField(this.id, e);
   };
+
+  removeListeners = () => {
+    const { leaveBtn, roadFields } = this;
+    leaveBtn.removeEventListener("click", this.handleLeaveMove);
+    roadFields.forEach((el) => {
+      el.removeEventListener("click", this.onClick);
+    });
+  }
 
   handleLeaveMove = () => {
     const { put, leaveBtn, roadFields } = this;

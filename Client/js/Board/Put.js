@@ -17,6 +17,9 @@ class Put {
     addListeneres = () => {
         this.arrows.forEach(el => el.addEventListener('click', this.handleClick))
     }
+    removeListeners = () => {
+        this.arrows.forEach(el => el.removeEventListener('click', this.handleClick))
+    }
 
     handleClick = (e) => {
         const putData = {

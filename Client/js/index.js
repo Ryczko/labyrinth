@@ -3,7 +3,7 @@ import Put from "./Board/Put.js";
 import Start from "./Start/Start.js";
 import { createCards } from "./Cards/Cards.js";
 import { newMessage } from "./Chat/newMessage.js";
-import { startCounting, stopCounting } from "./Timer/timer.js";
+import { startCounting } from "./Timer/timer.js";
 
 const socket = io("http://localhost:3000");
 const chatForm = document.querySelector(".chat__form");
@@ -38,6 +38,11 @@ socket.on("user-disconnected", (name) => {
   newMessage("bot", `${name} wyszedł z gry`);
 });
 
+
+
+
+
+
 //Board init and coping
 socket.on("get-board", () => {
   playerBoard = new Board();
@@ -49,6 +54,10 @@ socket.on("create-board", (board) => {
   playerBoard = new Board();
   playerBoard.copyBoard(board);
 });
+
+socket.on('start-time', () => {
+  startCounting();
+})
 
 //starting game
 
@@ -86,18 +95,15 @@ socket.on("players-start-data", (playerInfo) => {
 
   start.createPlayers(colors.length, colors);
 
-  //socket.emit("start-turn", true);
+
 });
 
 //round menager
 
-socket.on("start-counting", () => {
-  startCounting();
-});
-
 socket.on("players-move", () => {
-  socket.emit("start-timer");
+
   console.log("ruch");
+
   document
     .querySelector(".player__moving-field__arrow")
     .classList.remove("hide");
@@ -121,24 +127,47 @@ socket.on("move-player", (data) => {
 });
 
 socket.on("change-player", (names, firstMove = false) => {
+  console.log('wykonuje funkcjje change player')
+
+
+  document.querySelector(".player__moving-field__arrow").classList.add("hide");
+
+  if (names[start.activePlayer] === name && !firstMove) {
+
+    put.isMoved = true;
+    start.playersArray[start.activePlayer].removeListeners();
+    put.removeListeners();
+
+  }
+
+
   if (firstMove) start.activePlayer = -1;
   if (start.activePlayer === start.playersArray.length - 1)
     start.activePlayer = 0;
   else start.activePlayer++;
 
-  if (names[start.activePlayer] === name)
+  if (names[start.activePlayer] === name) {
     newMessage(
       "Bot",
       "Twój ruch",
       start.playersArray[start.activePlayer].playerSkin
     );
-  else
+
+    socket.emit('active-player', start.activePlayer);
+
+  }
+  else {
     newMessage(
       "Bot",
       `Ruch gracza ${names[start.activePlayer]}`,
       start.playersArray[start.activePlayer].playerSkin
     );
+
+
+  }
+
   put.isMoved = false;
+
 });
 
 socket.on("delete-treasure", (collected) => {

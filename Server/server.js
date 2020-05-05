@@ -1,10 +1,31 @@
 const io = require("socket.io")(3000);
 
 const users = {};
+let activePlayer;
+let time = 30;
 let boardInfo = null;
+let timeIterval;
+
+
 
 io.on("connection", (socket) => {
   if (Object.keys(users).length < 4) {
+
+    const resetTime = () => {
+      time = 30;
+      clearInterval(timeIterval)
+    }
+
+    const changeTime = () => {
+      time--;
+      console.log(time)
+      if (time === 0) {
+        io.emit("change-player", Object.values(users));
+        resetTime();
+      }
+    }
+
+
     socket.on("new-user", (name) => {
       if (name == null) name = "";
       if (name !== "") {
@@ -28,9 +49,7 @@ io.on("connection", (socket) => {
       }
     });
 
-    socket.on("start-timer", () => {
-      io.emit("start-counting");
-    });
+
 
     socket.on("put-element", (putData) => {
       socket.broadcast.emit("send-put-element", putData);
@@ -61,29 +80,36 @@ io.on("connection", (socket) => {
       io.to(`${Object.keys(users)[0]}`).emit("players-move");
     });
 
-    socket.on("stop-counting", () => {
-      socket.broadcast.emit("change-player", Object.values(users));
-    });
+    socket.on('active-player', activeP => {
+      activePlayer = activeP;
+      io.to(`${Object.keys(users)[activePlayer]}`).emit("players-move");
+      timeIterval = setInterval(changeTime, 1000);
+      io.emit('start-time')
+      console.log(activePlayer)
+    })
 
     socket.on("move-animation", (data) => {
-      console.log(users);
+
       socket.broadcast.emit("move-player", data);
       socket.broadcast.emit("change-player", Object.values(users));
 
       const usersKeys = Object.keys(users);
-
+      console.log('zmiana')
       if (data.id === usersKeys.length) data.id = 0;
 
+      resetTime();
       io.to(usersKeys[data.id]).emit("players-move");
     });
 
+
     socket.on("leave-move", (id) => {
+      resetTime();
       socket.broadcast.emit("change-player", Object.values(users));
+      // console.log('zmiana')
+      // const usersKeys = Object.keys(users);
+      // if (id === usersKeys.length) id = 0;
 
-      const usersKeys = Object.keys(users);
-      if (id === usersKeys.length) id = 0;
-
-      io.to(usersKeys[id]).emit("players-move");
+      // io.to(usersKeys[id]).emit("players-move");
     });
 
     socket.on("collect-treasure", (collected) => {
