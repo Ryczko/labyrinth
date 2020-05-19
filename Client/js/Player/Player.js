@@ -3,7 +3,7 @@ import { newMessage } from "../Chat/newMessage.js";
 const socket = io("http://localhost:3000");
 
 class Player {
-  constructor(cards, show, id, roundMenager, put, color = null) {
+  constructor(cards, id, put, color = null) {
     this.roadFields = [...document.querySelectorAll(".board__road-field")];
     this.changeCard = changeCard;
     this.cards = cards;
@@ -16,7 +16,6 @@ class Player {
     this.win = false;
     this.inicialPlayersPosition();
   }
-
 
   inicialPlayersPosition = () => {
     const { id, roadFields } = this;
@@ -37,7 +36,6 @@ class Player {
     player.classList.add("pawn");
 
     //random color
-
     if (this.playerSkin == null) {
       this.playerSkin = `rgb(${Math.floor(
         Math.random() * 255 + 1
@@ -56,8 +54,6 @@ class Player {
   move = (id) => {
     const { roadFields, leaveBtn } = this;
 
-    //newMessage('Bot', `Player's turn number ${id}`, this.playerSkin);
-
     leaveBtn.addEventListener("click", this.handleLeaveMove);
 
     roadFields.forEach((el) => {
@@ -75,7 +71,7 @@ class Player {
     roadFields.forEach((el) => {
       el.removeEventListener("click", this.onClick);
     });
-  }
+  };
 
   handleLeaveMove = () => {
     const { put, leaveBtn, roadFields } = this;
@@ -85,10 +81,8 @@ class Player {
       roadFields.forEach((el) => {
         el.removeEventListener("click", this.onClick);
       });
-      console.log("wyslijd");
+
       socket.emit("leave-move", this.id);
-      // if (!this.win) this.changePlayer();
-      // else newMessage('Bot', 'End of the game!');
     } else {
       newMessage("Bot", "In first put the block!");
     }
@@ -121,11 +115,6 @@ class Player {
         socket.emit("move-animation", { path, id });
 
         leaveBtn.removeEventListener("click", this.handleLeaveMove);
-
-        // this.time = 30;
-
-        // if (!this.win) this.changePlayer();
-        // else newMessage('Bot', 'End of the game!');
       } else {
         newMessage("Bot", "No transition!");
       }
@@ -395,11 +384,6 @@ class Player {
 
     if (this.isWin(arrPath[arrPath.length - 1]))
       return newMessage("Bot", `Congratulations, player ${id} wins!`);
-
-    // setTimeout(() => {
-    // 	if (!this.win) this.changePlayer();
-    // 	else newMessage('Bot', 'End of the game!');
-    // }, treasureAnimationTime);
   };
 
   collectTreasure = (arrPath, id) => {
@@ -418,8 +402,6 @@ class Player {
         const onFieldTreasure = currentField[0].dataset.item;
 
         if (findingTreasure === onFieldTreasure) {
-          //   changeCard(this.cards);
-
           currentField[0].removeAttribute("data-item");
 
           const currentFieldBackgrounds = currentField[0].style.backgroundImage.split(
@@ -436,13 +418,13 @@ class Player {
 
           currentField[0].style.backgroundImage = `${newBackground}`;
 
-          const collected = {
-            id: this.id,
-            message: `Player ${this.id} collected the ${onFieldTreasure}!`,
-            treasure: onFieldTreasure,
-          };
-
-          if (this.id === id) changeCard(this.cards);
+          if (this.id === id) {
+            changeCard(this.cards);
+            newMessage(
+              "Bot",
+              `Player ${this.id} collected the ${onFieldTreasure}!`
+            );
+          }
 
           this.showFinish();
         }

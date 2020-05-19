@@ -6,15 +6,15 @@ import { newMessage } from "./Chat/newMessage.js";
 import { startCounting } from "./Timer/timer.js";
 
 const socket = io("http://localhost:3000");
-const chatForm = document.querySelector(".chat__form");
-const messageInput = document.querySelector(".chat__form__input");
+
+const chatForm = document.querySelector(".chat__form"),
+  messageInput = document.querySelector(".chat__form__input");
 
 let put = null,
   playerBoard = null,
   start = null;
 
 //users connecting and disconnecting
-
 let name = prompt("twoje imie");
 
 socket.emit("new-user", name);
@@ -38,11 +38,6 @@ socket.on("user-disconnected", (name) => {
   newMessage("bot", `${name} wyszedł z gry`);
 });
 
-
-
-
-
-
 //Board init and coping
 socket.on("get-board", () => {
   playerBoard = new Board();
@@ -55,12 +50,11 @@ socket.on("create-board", (board) => {
   playerBoard.copyBoard(board);
 });
 
-socket.on('start-time', () => {
+socket.on("start-time", () => {
   startCounting();
-})
+});
 
 //starting game
-
 socket.on("start-game", (numberOfUsers) => {
   put = new Put();
   start = new Start(numberOfUsers, put);
@@ -94,16 +88,10 @@ socket.on("players-start-data", (playerInfo) => {
   createCards(cards);
 
   start.createPlayers(colors.length, colors);
-
-
 });
 
-//round menager
-
+//game menager
 socket.on("players-move", () => {
-
-  console.log("ruch");
-
   document
     .querySelector(".player__moving-field__arrow")
     .classList.remove("hide");
@@ -127,19 +115,13 @@ socket.on("move-player", (data) => {
 });
 
 socket.on("change-player", (names, firstMove = false) => {
-  console.log('wykonuje funkcjje change player')
-
-
   document.querySelector(".player__moving-field__arrow").classList.add("hide");
 
   if (names[start.activePlayer] === name && !firstMove) {
-
     put.isMoved = true;
     start.playersArray[start.activePlayer].removeListeners();
     put.removeListeners();
-
   }
-
 
   if (firstMove) start.activePlayer = -1;
   if (start.activePlayer === start.playersArray.length - 1)
@@ -153,21 +135,16 @@ socket.on("change-player", (names, firstMove = false) => {
       start.playersArray[start.activePlayer].playerSkin
     );
 
-    socket.emit('active-player', start.activePlayer);
-
-  }
-  else {
+    socket.emit("active-player", start.activePlayer);
+  } else {
     newMessage(
       "Bot",
       `Ruch gracza ${names[start.activePlayer]}`,
       start.playersArray[start.activePlayer].playerSkin
     );
-
-
   }
 
   put.isMoved = false;
-
 });
 
 socket.on("delete-treasure", (collected) => {
@@ -200,10 +177,3 @@ chatForm.addEventListener("submit", (e) => {
 
   messageInput.value = "";
 });
-
-// //map initialization
-// const board = new Board();
-// const put = new Put();
-// inicializeChat();
-// //argument = number of players
-// const start = new Start(4, put);

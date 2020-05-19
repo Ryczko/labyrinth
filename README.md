@@ -6,10 +6,12 @@
 
 ## Technologies
 Project is created with:
-* JavaScript
-* Node.js
 * HTML
 * SCSS
+* JavaScript
+* Node.js
+* Socket.io
+
 
 ## Setup
 To run this project, install it locally using [npm](https://www.npmjs.com):

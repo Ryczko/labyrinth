@@ -1,9 +1,11 @@
-const socket = io("http://localhost:3000");
-
 const timer = document.querySelector(".player__timer");
 let time = 30;
 let intervalId = null;
 
+const interval = () => {
+  time--;
+  timer.textContent = time;
+};
 
 export const startCounting = () => {
   if (intervalId != null) {
@@ -12,11 +14,3 @@ export const startCounting = () => {
   }
   intervalId = setInterval(interval, 1000);
 };
-
-
-const interval = () => {
-  time--;
-  timer.textContent = time;
-};
-
-
