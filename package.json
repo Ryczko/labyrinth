@@ -7,7 +7,7 @@
     "scss:build": "node-sass --output-style compressed -o ./public/Game/css ./public/Game/scss",
     "scss:watch": "onchange -v \"./public/Game/scss/**/*.scss\" -- npm run scss:build",
     "server:start": "nodemon Server/server.js",
-    "start": "parallelshell \"npm run server:start\" \"npm run scss:watch\""
+    "start": "parallelshell \"nodemon server.js\" \"npm run scss:watch\""
   },
   "repository": {
     "type": "git",
