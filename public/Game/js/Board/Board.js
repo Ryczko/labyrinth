@@ -49,7 +49,7 @@ class Board {
 
     treasuresRoadFields.forEach(
       (el) =>
-        (el.style.backgroundImage = `url(../Client/img/treasures/${el.dataset.item}.png), url(../Client/img/roadSplit.png)`)
+        (el.style.backgroundImage = `url(Game/img/treasures/${el.dataset.item}.png), url(Game/img/roadSplit.png)`)
     );
 
     randomRoadFields.forEach((el) => {
@@ -86,9 +86,9 @@ class Board {
       }
 
       if (el.dataset.item === undefined)
-        el.style.background = `url(../Client/img/${fieldType}.png)`;
+        el.style.background = `url(Game/img/${fieldType}.png)`;
       else
-        el.style.background = `url(../Client/img/treasures/${el.dataset.item}.png), url(../Client/img/${fieldType}.png)`;
+        el.style.background = `url(Game/img/treasures/${el.dataset.item}.png), url(Game/img/${fieldType}.png)`;
 
       el.style.transform = `rotate(${fieldRotation}deg)`;
 

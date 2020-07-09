@@ -22,7 +22,7 @@ export const createCards = (cards) => {
     if (i == cards.length - 1) {
       setTimeout(function () {
         card.dataset.item = cards[i].name;
-        cardBack.style.backgroundImage = `url(../Client/img/treasures/${cards[i].name}.png)`;
+        cardBack.style.backgroundImage = `url(Game/img/treasures/${cards[i].name}.png)`;
         card.style.transform = `rotateY(180deg) translateX(${
           -1 * transformX * i
         }px)`;

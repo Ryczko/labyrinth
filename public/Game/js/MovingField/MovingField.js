@@ -12,7 +12,7 @@ class MovingField {
   }
 
   addMovingField = () => {
-    this.movingField.style.backgroundImage = `url(../Client/img/${this.type}.png)`;
+    this.movingField.style.backgroundImage = `url(Game/img/${this.type}.png)`;
 
     this.arrow.addEventListener("click", () => {
       socket.emit("rotate-element");
