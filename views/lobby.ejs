@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+<%- include('./includes/head.ejs')%>
 </head>
+
 <body>
-    <h1>Lobby</h1>
-    <% Object.keys(rooms).forEach(room => { %>
-        <div><%= room %></div>
-        <a href="/<%= room %>">Join</a>
-    <% }) %>
-    <form action="/room" method="POST">
-        <input name="room" type="text" required>
-        <button type="submit">New room</button>
-    </form>
+    <div class="wrapper">
+        <h1 class="lobby-title">Lobby</h1>
+        <form action="/room" method="POST" class="new-room">
+            <input name="room" type="text" placeholder="new room name" required class="new-room__input">
+            <button type="submit" class="new-room__btn">Create</button>
+        </form>
+        <div class="active-rooms">
+            <% Object.keys(rooms).forEach(room => { %>
+            <div class="active-rooms__room">
+                <div><%= room %></div>
+                <a href="/<%= room %>">Join</a>
+            </div>
+            <% }) %>
+        </div>
+
+    </div>
 </body>
+
 </html>

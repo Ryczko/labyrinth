@@ -4,8 +4,8 @@
   "description": "",
   "main": "Server/server.js",
   "scripts": {
-    "scss:build": "node-sass --output-style compressed -o ./public/Game/css ./public/Game/scss",
-    "scss:watch": "onchange -v \"./public/Game/scss/**/*.scss\" -- npm run scss:build",
+    "scss:build": "node-sass --output-style compressed -o ./public/css ./public",
+    "scss:watch": "onchange -v \"./public/**/scss/**/*.scss\" \"./public/global/scss/*.scss\" -- npm run scss:build",
     "server:start": "nodemon Server/server.js",
     "start": "parallelshell \"nodemon server.js\" \"npm run scss:watch\""
   },

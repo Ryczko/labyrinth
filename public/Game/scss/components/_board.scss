@@ -24,12 +24,12 @@
 
         //start players position
         &:nth-child(1),&:nth-child(7),&:nth-child(43),&:nth-child(49){
-            background-image: url('../img/roadCorner.png');
+            background-image: url('../Game/img/roadCorner.png');
         }
 
         //static treasuers (12)
         &:nth-child(14n+3),&:nth-child(14n+5),&:nth-child(15),&:nth-child(21),&:nth-child(29),&:nth-child(35){
-            background-image: url('../img/roadSplit.png');
+            background-image: url('../Game/img/roadSplit.png');
         }
         
         &:nth-child(1),&:nth-child(31),&:nth-child(47),&:nth-child(45){

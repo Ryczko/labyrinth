@@ -18,9 +18,9 @@ app.get("/", (req, res) => {
 
 app.post("/room", (req, res) => {
 
-  console.log('przed')
+
   if (rooms[req.body.room] != null) return console.log('taka nazwa już istnieje')
-  console.log('po')
+
   rooms[req.body.room] = { users: {} };
   res.redirect(req.body.room);
   //wyslij ze pokoj stworzony
