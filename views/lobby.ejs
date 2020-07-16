@@ -6,6 +6,14 @@
         <h1 class="lobby-title">Lobby</h1>
         <form action="/room" method="POST" class="new-room">
             <input name="room" type="text" placeholder="new room name" required class="new-room__input">
+            <label for="number"class="new-room__input">Number of players</label>
+            <select name="numberOfPlayers" id="number" class="new-room__input">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            
             <button type="submit" class="new-room__btn">Create</button>
         </form>
         <div class="active-rooms">

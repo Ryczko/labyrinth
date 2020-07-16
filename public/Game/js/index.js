@@ -17,11 +17,11 @@ let put = null,
 //users connecting and disconnecting
 let name = prompt("twoje imie");
 
-socket.emit("new-user", name);
+socket.emit("new-user", name, roomName);
 
 socket.on("wrong-name", () => {
   name = prompt("twoje imie");
-  socket.emit("new-user", name);
+  socket.emit("new-user", name, roomName);
 });
 
 newMessage("bot", `Dołączyłeś do gry`);
@@ -42,11 +42,13 @@ socket.on("user-disconnected", (name) => {
 socket.on("get-board", () => {
   playerBoard = new Board();
   const boardInfo = playerBoard.createNewBoard();
-  socket.emit("init-board", boardInfo);
+  console.log("wykonuje get board");
+  socket.emit("init-board", boardInfo, roomName);
 });
 
 socket.on("create-board", (board) => {
   playerBoard = new Board();
+  console.log("wykonuje create board");
   playerBoard.copyBoard(board);
 });
 
@@ -55,14 +57,14 @@ socket.on("start-time", () => {
 });
 
 //starting game
-socket.on("start-game", (numberOfUsers) => {
+socket.on("start-game", (numberOfUsers, usersNames) => {
   put = new Put();
-  start = new Start(numberOfUsers, put);
+  start = new Start(numberOfUsers, put, null, usersNames);
   start.dealCards(start.playerNumber);
 
   start.createPlayers(numberOfUsers);
 
-  createCards(start.allCards[start.allCards.length - 1]);
+  createCards(start.allCards[0]);
   const playersFields = [...document.querySelectorAll(".pawn")];
 
   const pawnColors = [];
@@ -74,16 +76,20 @@ socket.on("start-game", (numberOfUsers) => {
   const playersInfo = {
     colors: pawnColors,
     cards: start.allCards,
+    usersNames,
   };
 
-  socket.emit("players-info", playersInfo);
+  console.log(usersNames);
+
+  console.log("startuje gre");
+  socket.emit("players-info", playersInfo, roomName);
 });
 
 socket.on("players-start-data", (playerInfo) => {
-  const { colors, cards, allCards } = playerInfo;
+  const { colors, cards, allCards, usersNames } = playerInfo;
 
   put = new Put();
-  start = new Start(colors.length, put);
+  start = new Start(colors.length, put, null, usersNames);
   start.allCards = allCards;
   createCards(cards);
 
@@ -135,7 +141,10 @@ socket.on("change-player", (names, firstMove = false) => {
       start.playersArray[start.activePlayer].playerSkin
     );
 
-    socket.emit("active-player", start.activePlayer);
+    socket.emit("active-player", {
+      activePlayer: start.activePlayer,
+      room: roomName,
+    });
   } else {
     newMessage(
       "Bot",
@@ -173,7 +182,7 @@ chatForm.addEventListener("submit", (e) => {
 
   newMessage("You", text);
 
-  socket.emit("send-new-message", message);
+  socket.emit("send-new-message", message, roomName);
 
   messageInput.value = "";
 });

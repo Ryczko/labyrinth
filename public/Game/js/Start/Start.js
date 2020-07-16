@@ -2,13 +2,14 @@ import { AllTreasuresData } from "../Data/AllTreasuresData.js";
 import Player from "../Player/Player.js";
 
 class Start {
-  constructor(playerNumber, put, colors = null) {
+  constructor(playerNumber, put, colors = null, names = []) {
     this.put = put;
     this.colors = colors;
     this.playersArray = [];
     this.playerNumber = playerNumber;
     this.allCards = [];
     this.activePlayer = 0;
+    this.names = names;
   }
 
   shuffle = (a) => {
@@ -21,12 +22,12 @@ class Start {
 
   dealCards = (playerNumber) => {
     const treasures = this.shuffle(AllTreasuresData);
-	const cardAmount = treasures.length / playerNumber;
+    const cardAmount = treasures.length / playerNumber;
 
     for (let i = 0; i < playerNumber; i++) {
       const playerCards = treasures.slice(i * cardAmount, cardAmount * (i + 1));
       this.allCards.push(playerCards);
-	}
+    }
   };
 
   createPlayers = (playerNumber, colors = null) => {
@@ -35,9 +36,10 @@ class Start {
         this.allCards[i],
         i + 1,
         this.put,
-        colors == null ? null : colors[i]
+        colors == null ? null : colors[i],
+        this.names[i]
       );
-	}
+    }
   };
 }
 

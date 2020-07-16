@@ -3,7 +3,7 @@ import { newMessage } from "../Chat/newMessage.js";
 const socket = io("http://localhost:3000");
 
 class Player {
-  constructor(cards, id, put, color = null) {
+  constructor(cards, id, put, color = null, name) {
     this.roadFields = [...document.querySelectorAll(".board__road-field")];
     this.changeCard = changeCard;
     this.cards = cards;
@@ -14,6 +14,7 @@ class Player {
     this.pawn = null;
     this.put = put;
     this.win = false;
+    this.name = name;
     this.inicialPlayersPosition();
   }
 
@@ -81,8 +82,7 @@ class Player {
       roadFields.forEach((el) => {
         el.removeEventListener("click", this.onClick);
       });
-
-      socket.emit("leave-move", this.id);
+      socket.emit("leave-move", this.id, roomName);
     } else {
       newMessage("Bot", "In first put the block!");
     }
@@ -112,7 +112,7 @@ class Player {
           el.removeEventListener("click", this.onClick);
         });
 
-        socket.emit("move-animation", { path, id });
+        socket.emit("move-animation", { path, id }, roomName);
 
         leaveBtn.removeEventListener("click", this.handleLeaveMove);
       } else {
@@ -422,7 +422,7 @@ class Player {
             changeCard(this.cards);
             newMessage(
               "Bot",
-              `Player ${this.id} collected the ${onFieldTreasure}!`
+              `Player ${this.name} collected the ${onFieldTreasure}!`
             );
           }
 

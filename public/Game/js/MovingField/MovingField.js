@@ -15,7 +15,7 @@ class MovingField {
     this.movingField.style.backgroundImage = `url(Game/img/${this.type}.png)`;
 
     this.arrow.addEventListener("click", () => {
-      socket.emit("rotate-element");
+      socket.emit("rotate-element", roomName);
     });
 
     this.movingField.dataset.entry = entryType(
@@ -42,7 +42,7 @@ class MovingField {
     }
 
     this.rotate += 90;
-    
+
     if (this.rotate === 270) this.rotate = -90;
     this.movingField.style.transform = `rotate(${this.rotate}deg)`;
     this.movingField.dataset.entry = entryType(

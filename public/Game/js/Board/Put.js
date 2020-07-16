@@ -26,7 +26,7 @@ class Put {
       column: e.target.dataset.column,
     };
 
-    socket.emit("put-element", putData);
+    socket.emit("put-element", putData, roomName);
   };
 
   slide = (putData) => {
@@ -219,7 +219,7 @@ class Put {
 
     el.removeAttribute("data-item");
     el.removeAttribute("data-player");
-    
+
     return [background, rotation, item, entry, player, playerDiv];
   };
 }
