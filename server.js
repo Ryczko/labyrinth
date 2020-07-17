@@ -1,48 +1,22 @@
 const express = require("express");
 const path = require("path");
+const Rooms = require("./models/rooms");
+const lobbyRoutes = require("./routes/lobby");
 
 const app = express();
 const server = require("http").Server(app);
+
 const io = require("socket.io")(server);
 
 app.set("views", "views");
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
-
-const rooms = { room1: { users: {}, numberOfPlayers: 2 } };
-
-app.get("/", (req, res) => {
-  res.render("lobby", { rooms: rooms });
+app.use((req, res, next) => {
+  req.io = io;
+  next();
 });
-
-app.post("/room", (req, res) => {
-  if (rooms[req.body.room] != null) {
-    return res.redirect("/");
-  }
-
-  rooms[req.body.room] = {
-    users: {},
-    numberOfPlayers: req.body.numberOfPlayers,
-  };
-
-  res.redirect(req.body.room);
-  //wyslij ze pokoj stworzony
-});
-
-app.get("/:room", (req, res) => {
-  const roomInfoIndex = Object.keys(rooms).indexOf(req.params.room);
-  const roomInfo = Object.values(rooms)[roomInfoIndex];
-  if (roomInfo) {
-    res.render("game", {
-      roomName: req.params.room,
-      numberOfPlayers: roomInfo.numberOfPlayers,
-      boardInfo: null,
-    });
-  } else {
-    res.redirect("/");
-  }
-});
+app.use(lobbyRoutes);
 
 server.listen(3000);
 
@@ -66,27 +40,34 @@ io.on("connection", (socket) => {
   socket.on("new-user", (name, room) => {
     if (name !== "" && name != null) {
       socket.join(room);
-      rooms[room].users[socket.id] = name;
+      Rooms.addPlayerToRoom(room, socket.id, name);
+
+      io.emit("change-players-number", {
+        roomName: room,
+        maxPlayers: Rooms.getRoom(room).numberOfPlayers,
+        activePlayers: Object.keys(Rooms.getRoom(room).users).length,
+      });
       socket.to(room).broadcast.emit("hello-message", name);
     } else {
       return socket.emit("wrong-name");
     }
 
-    if (rooms[room].boardInfo == null) {
-      io.to(Object.keys(rooms[room].users)[0]).emit("get-board");
+    if (Rooms.getRoom(room).boardInfo == null) {
+      io.to(Object.keys(Rooms.getRoom(room).users)[0]).emit("get-board");
     } else {
-      io.to(room).emit("create-board", rooms[room].boardInfo);
+      io.to(room).emit("create-board", Rooms.getRoom(room).boardInfo);
     }
 
     //start the game
     if (
-      Object.keys(rooms[room].users).length === +rooms[room].numberOfPlayers
+      Object.keys(Rooms.getRoom(room).users).length ===
+      +Rooms.getRoom(room).numberOfPlayers
     ) {
       console.log("startuje");
-      io.to(Object.keys(rooms[room].users)[0]).emit(
+      io.to(Object.keys(Rooms.getRoom(room).users)[0]).emit(
         "start-game",
-        +rooms[room].numberOfPlayers,
-        Object.values(rooms[room].users)
+        +Rooms.getRoom(room).numberOfPlayers,
+        Object.values(Rooms.getRoom(room).users)
       );
     }
   });
@@ -99,11 +80,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("init-board", (board, room) => {
-    rooms[room].boardInfo = board;
+    Rooms.getRoom(room).boardInfo = board;
   });
 
   socket.on("players-info", (playersInfo, room) => {
-    const usersKeys = Object.keys(rooms[room].users);
+    const usersKeys = Object.keys(Rooms.getRoom(room).users);
 
     usersKeys.forEach((el, index) => {
       if (index !== 0) {
@@ -114,19 +95,21 @@ io.on("connection", (socket) => {
           usersNames: playersInfo.usersNames,
         };
 
-        console.log(playerInfo.cards);
-
         socket.to(el).broadcast.emit("players-start-data", playerInfo);
       }
     });
-    io.to(room).emit("change-player", Object.values(rooms[room].users), true);
-    io.to(`${Object.keys(rooms[room].users)[0]}`).emit("players-move");
+    io.to(room).emit(
+      "change-player",
+      Object.values(Rooms.getRoom(room).users),
+      true
+    );
+    io.to(`${Object.keys(Rooms.getRoom(room).users)[0]}`).emit("players-move");
   });
 
   socket.on("active-player", (data) => {
-    io.to(`${Object.keys(rooms[data.room].users)[data.activePlayer]}`).emit(
-      "players-move"
-    );
+    io.to(
+      `${Object.keys(Rooms.getRoom(data.room).users)[data.activePlayer]}`
+    ).emit("players-move");
     //timeIterval = setInterval(changeTime, 1000);
     //io.emit("start-time");
   });
@@ -135,9 +118,12 @@ io.on("connection", (socket) => {
     socket.to(room).broadcast.emit("move-player", data);
     socket
       .to(room)
-      .broadcast.emit("change-player", Object.values(rooms[room].users));
+      .broadcast.emit(
+        "change-player",
+        Object.values(Rooms.getRoom(room).users)
+      );
 
-    const usersKeys = Object.keys(rooms[room].users);
+    const usersKeys = Object.keys(Rooms.getRoom(room).users);
     if (data.id === usersKeys.length) data.id = 0;
 
     //resetTime();
@@ -148,12 +134,11 @@ io.on("connection", (socket) => {
     //resetTime();
     socket
       .to(room)
-      .broadcast.emit("change-player", Object.values(rooms[room].users));
+      .broadcast.emit(
+        "change-player",
+        Object.values(Rooms.getRoom(room).users)
+      );
   });
-
-  // socket.on("collect-treasure", (collected,room) => {
-  //   socket.broadcast.emit("delete-treasure", collected);
-  // });
 
   socket.on("send-new-message", (message, room) => {
     socket.to(room).broadcast.emit("chat-message", message);
@@ -163,14 +148,24 @@ io.on("connection", (socket) => {
     getUserRooms(socket).forEach((room) => {
       socket
         .to(room)
-        .broadcast.emit("user-disconnected", rooms[room].users[socket.id]);
-      delete rooms[room].users[socket.id];
+        .broadcast.emit(
+          "user-disconnected",
+          Rooms.getRoom(room).users[socket.id]
+        );
+
+      Rooms.removePlayer(room, socket.id);
+
+      io.emit("change-players-number", {
+        roomName: room,
+        maxPlayers: Rooms.getRoom(room).numberOfPlayers,
+        activePlayers: Object.keys(Rooms.getRoom(room).users).length,
+      });
     });
   });
 });
 
 function getUserRooms(socket) {
-  return Object.entries(rooms).reduce((names, [name, room]) => {
+  return Object.entries(Rooms.getAllRooms()).reduce((names, [name, room]) => {
     if (room.users[socket.id] != null) names.push(name);
     return names;
   }, []);

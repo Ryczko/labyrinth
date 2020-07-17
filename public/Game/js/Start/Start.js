@@ -2,9 +2,8 @@ import { AllTreasuresData } from "../Data/AllTreasuresData.js";
 import Player from "../Player/Player.js";
 
 class Start {
-  constructor(playerNumber, put, colors = null, names = []) {
+  constructor(playerNumber, put, names = []) {
     this.put = put;
-    this.colors = colors;
     this.playersArray = [];
     this.playerNumber = playerNumber;
     this.allCards = [];

@@ -59,7 +59,7 @@ socket.on("start-time", () => {
 //starting game
 socket.on("start-game", (numberOfUsers, usersNames) => {
   put = new Put();
-  start = new Start(numberOfUsers, put, null, usersNames);
+  start = new Start(numberOfUsers, put, usersNames);
   start.dealCards(start.playerNumber);
 
   start.createPlayers(numberOfUsers);
@@ -79,9 +79,6 @@ socket.on("start-game", (numberOfUsers, usersNames) => {
     usersNames,
   };
 
-  console.log(usersNames);
-
-  console.log("startuje gre");
   socket.emit("players-info", playersInfo, roomName);
 });
 
@@ -89,7 +86,7 @@ socket.on("players-start-data", (playerInfo) => {
   const { colors, cards, allCards, usersNames } = playerInfo;
 
   put = new Put();
-  start = new Start(colors.length, put, null, usersNames);
+  start = new Start(colors.length, put, usersNames);
   start.allCards = allCards;
   createCards(cards);
 

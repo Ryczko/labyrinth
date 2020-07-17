@@ -1,4 +1,5 @@
 <%- include('./includes/head.ejs')%>
+<script type="module" defer src="/lobby/js/index.js"></script>
 </head>
 
 <body>
@@ -18,8 +19,12 @@
         </form>
         <div class="active-rooms">
             <% Object.keys(rooms).forEach(room => { %>
-            <div class="active-rooms__room">
-                <div><%= room %></div>
+            <div class="active-rooms__room" data-roomname="<%= room %>">
+                <%= room %> 
+                <h4> Players: 
+                    <span class="active-rooms__active-players"><%= Object.keys(rooms[room].users).length %></span>/
+                    <span class="active-rooms__max-players"><%= rooms[room].numberOfPlayers %> </span>
+                </h4>
                 <a href="/<%= room %>">Join</a>
             </div>
             <% }) %>
