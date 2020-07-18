@@ -1,6 +1,6 @@
 import { entryType } from "../Board/entryType.js";
 
-const socket = io("http://localhost:3000");
+const socket = io(window.location.origin);
 
 class MovingField {
   constructor(type) {

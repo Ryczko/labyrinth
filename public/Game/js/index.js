@@ -5,7 +5,7 @@ import { createCards } from "./Cards/Cards.js";
 import { newMessage } from "./Chat/newMessage.js";
 import { startCounting } from "./Timer/timer.js";
 
-const socket = io("http://localhost:3000");
+const socket = io(window.location.origin);
 
 const chatForm = document.querySelector(".chat__form"),
   messageInput = document.querySelector(".chat__form__input");

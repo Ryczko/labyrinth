@@ -1,6 +1,6 @@
 import { changeCard } from "../Cards/Cards.js";
 import { newMessage } from "../Chat/newMessage.js";
-const socket = io("http://localhost:3000");
+const socket = io(window.location.origin);
 
 class Player {
   constructor(cards, id, put, color = null, name) {

@@ -18,7 +18,9 @@ app.use((req, res, next) => {
 });
 app.use(lobbyRoutes);
 
-server.listen(3000);
+PORT = process.env.PORT || 3000;
+
+server.listen(PORT);
 
 //let time = 30,
 //timeIterval;
