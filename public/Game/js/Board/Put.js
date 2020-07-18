@@ -7,7 +7,6 @@ class Put {
     this.arrows = document.querySelectorAll(".board-arrows");
     this.movingField = document.querySelector(".player__moving-field__field");
     this.size = this.movingField.offsetWidth + 1;
-
     this.isMoved = false;
   }
 
@@ -200,7 +199,9 @@ class Put {
   };
 
   getElementProperties = (el) => {
-    const background = getComputedStyle(el).getPropertyValue("background");
+    const background = getComputedStyle(el).getPropertyValue(
+      "background-image"
+    );
     const rotation = getComputedStyle(el).getPropertyValue("transform");
     const item = el.hasAttribute("data-item") ? el.dataset.item : "";
     const entry = el.hasAttribute("data-entry") ? el.dataset.entry : "";

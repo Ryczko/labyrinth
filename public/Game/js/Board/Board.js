@@ -102,8 +102,8 @@ class Board {
 
   createNewBoard = () => {
     this.addDataRowsAndColumns();
-	this.buildNewBoard();
-	
+    this.buildNewBoard();
+
     return this.getBoardInfo();
   };
 
@@ -116,7 +116,7 @@ class Board {
       datas.push(Object.assign({}, el.dataset));
 
       const styleObject = {
-        background: getComputedStyle(el).getPropertyValue("background"),
+        background: getComputedStyle(el).getPropertyValue("background-image"),
         transform: getComputedStyle(el).getPropertyValue("transform"),
       };
 
@@ -140,7 +140,6 @@ class Board {
         field.setAttribute(`data-${name}`, value);
       });
     });
-
     info[1].forEach((styles, index) => {
       const field = this.roadFields[index];
 
