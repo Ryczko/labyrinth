@@ -38,6 +38,9 @@ io.on("connection", (socket) => {
   // };
 
   socket.on("new-user", (name, room) => {
+    if (Rooms.getRoom(room) == null) {
+      return socket.emit("redirect-to-lobby");
+    }
     if (name !== "" && name != null) {
       socket.join(room);
       Rooms.addPlayerToRoom(room, socket.id, name);
@@ -63,12 +66,12 @@ io.on("connection", (socket) => {
       Object.keys(Rooms.getRoom(room).users).length ===
       +Rooms.getRoom(room).numberOfPlayers
     ) {
-      console.log("startuje");
       io.to(Object.keys(Rooms.getRoom(room).users)[0]).emit(
         "start-game",
         +Rooms.getRoom(room).numberOfPlayers,
         Object.values(Rooms.getRoom(room).users)
       );
+      Rooms.fullRoom(room);
     }
   });
 
@@ -155,11 +158,25 @@ io.on("connection", (socket) => {
 
       Rooms.removePlayer(room, socket.id);
 
+      const usersKeys = Object.keys(Rooms.getRoom(room).users);
+
       io.emit("change-players-number", {
         roomName: room,
         maxPlayers: Rooms.getRoom(room).numberOfPlayers,
-        activePlayers: Object.keys(Rooms.getRoom(room).users).length,
+        activePlayers: usersKeys.length,
       });
+
+      if (usersKeys.length === 1 && Rooms.getRoom(room).isFull) {
+        io.to(usersKeys[0]).emit("chat-message", {
+          name: "Bot",
+          text: "All players have left the game, you won!",
+        });
+      }
+
+      if (usersKeys.length === 0) {
+        io.emit("delete-room", room);
+        Rooms.removeRoom(room);
+      }
     });
   });
 });

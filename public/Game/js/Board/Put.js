@@ -30,8 +30,6 @@ class Put {
   };
 
   slide = (putData) => {
-    console.log("W slide" + this.isMoved);
-
     if (this.isMoved) return newMessage("Bot", "Field has already been moved!");
 
     let info = {

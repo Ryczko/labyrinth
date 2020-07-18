@@ -14,20 +14,23 @@ let put = null,
   playerBoard = null,
   start = null;
 
-//users connecting and disconnecting
 let name = prompt("twoje imie");
 
 socket.emit("new-user", name, roomName);
 
+socket.on("redirect-to-lobby", () => {
+  window.location.replace("/");
+});
+
 socket.on("wrong-name", () => {
-  name = prompt("twoje imie");
+  name = prompt("Your name");
   socket.emit("new-user", name, roomName);
 });
 
-newMessage("bot", `Dołączyłeś do gry`);
+newMessage("bot", `You joined the game`);
 
 socket.on("hello-message", (name) => {
-  newMessage("bot", `gracz ${name} dołącza do gry`);
+  newMessage("bot", `The player ${name} joins the game`);
 });
 
 socket.on("user-limit", (msg) => {
@@ -35,20 +38,18 @@ socket.on("user-limit", (msg) => {
 });
 
 socket.on("user-disconnected", (name) => {
-  newMessage("bot", `${name} wyszedł z gry`);
+  newMessage("bot", `${name} quit the game`);
 });
 
 //Board init and coping
 socket.on("get-board", () => {
   playerBoard = new Board();
   const boardInfo = playerBoard.createNewBoard();
-  console.log("wykonuje get board");
   socket.emit("init-board", boardInfo, roomName);
 });
 
 socket.on("create-board", (board) => {
   playerBoard = new Board();
-  console.log("wykonuje create board");
   playerBoard.copyBoard(board);
 });
 
@@ -134,7 +135,7 @@ socket.on("change-player", (names, firstMove = false) => {
   if (names[start.activePlayer] === name) {
     newMessage(
       "Bot",
-      "Twój ruch",
+      "Your turn",
       start.playersArray[start.activePlayer].playerSkin
     );
 
@@ -145,7 +146,7 @@ socket.on("change-player", (names, firstMove = false) => {
   } else {
     newMessage(
       "Bot",
-      `Ruch gracza ${names[start.activePlayer]}`,
+      `Player ${names[start.activePlayer]} turn`,
       start.playersArray[start.activePlayer].playerSkin
     );
   }

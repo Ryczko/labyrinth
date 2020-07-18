@@ -25,7 +25,11 @@
                     <span class="active-rooms__active-players"><%= Object.keys(rooms[room].users).length %></span>/
                     <span class="active-rooms__max-players"><%= rooms[room].numberOfPlayers %> </span>
                 </h4>
-                <a href="/<%= room %>">Join</a>
+                <% if(rooms[room].isFull){%>
+                    <div>Game in progress</div>
+                <%} else {%>
+                <a href="/<%= room %>"  disabled>Join</a>
+                <%}%>
             </div>
             <% }) %>
         </div>

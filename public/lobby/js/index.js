@@ -21,9 +21,25 @@ socket.on("room-created", (data) => {
 });
 
 socket.on("change-players-number", (roomInfo) => {
-  const activePlayersSpan = document.querySelector(
-    `.active-rooms__room[data-roomName="${roomInfo.roomName}"] .active-rooms__active-players`
+  const room = document.querySelector(
+    `.active-rooms__room[data-roomName="${roomInfo.roomName}"]`
+  );
+  const activePlayersSpan = room.querySelector(`.active-rooms__active-players`);
+  activePlayersSpan.innerText = roomInfo.activePlayers;
+
+  if (+roomInfo.activePlayers === +roomInfo.maxPlayers) {
+    const joinBtn = room.querySelector("a");
+    joinBtn.remove();
+    const gameInProgress = document.createElement("div");
+    gameInProgress.innerText = "Game in progress";
+    room.appendChild(gameInProgress);
+  }
+});
+
+socket.on("delete-room", (roomName) => {
+  const room = document.querySelector(
+    `.active-rooms__room[data-roomName="${roomName}"]`
   );
 
-  activePlayersSpan.innerText = roomInfo.activePlayers;
+  if (room) room.remove();
 });
