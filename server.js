@@ -80,7 +80,9 @@ io.on("connection", (socket) => {
   socket.on("put-element", (putData, room) => {
     socket.to(room).broadcast.emit("send-put-element", putData);
   });
+
   socket.on("rotate-element", (room) => {
+    console.log("wykonaj");
     socket.to(room).broadcast.emit("rotate");
   });
 

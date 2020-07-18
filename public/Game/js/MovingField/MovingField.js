@@ -12,6 +12,7 @@ class MovingField {
   }
 
   addMovingField = () => {
+    console.log("tworze listener");
     this.movingField.style.backgroundImage = `url(Game/img/${this.type}.png)`;
 
     this.arrow.addEventListener("click", () => {
@@ -25,6 +26,7 @@ class MovingField {
   };
 
   rotateMovingField = () => {
+    console.log("obracam");
     const entryData = this.movingField.dataset.entry.split(",");
     const arr1 = ["top", "bottom"];
     const arr2 = ["left", "right"];

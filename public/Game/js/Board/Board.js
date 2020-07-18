@@ -96,8 +96,6 @@ class Board {
     });
 
     this.lastElement = optionArray.filter((el) => el.number === 1)[0].type;
-
-    this.movingField = new MovingField(this.lastElement);
   };
 
   createNewBoard = () => {
