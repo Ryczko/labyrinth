@@ -82,7 +82,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("rotate-element", (room) => {
-    console.log("wykonaj");
     socket.to(room).broadcast.emit("rotate");
   });
 

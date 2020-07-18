@@ -16,10 +16,12 @@
 }
 
 .new-room {
+  select,
   &__input,
   &__btn {
     font-size: 1.5rem;
     padding: 5px;
+    text-align: center;
   }
 
   &__btn {

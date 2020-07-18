@@ -8,11 +8,10 @@ class MovingField {
     this.rotate = 0;
     this.movingField = document.querySelector(".player__moving-field__field");
     this.arrow = document.querySelector(".player__moving-field__arrow");
-    this.addMovingField();
+    //this.addMovingField();
   }
 
   addMovingField = () => {
-    console.log("tworze listener");
     this.movingField.style.backgroundImage = `url(Game/img/${this.type}.png)`;
 
     this.arrow.addEventListener("click", () => {
@@ -26,7 +25,6 @@ class MovingField {
   };
 
   rotateMovingField = () => {
-    console.log("obracam");
     const entryData = this.movingField.dataset.entry.split(",");
     const arr1 = ["top", "bottom"];
     const arr2 = ["left", "right"];

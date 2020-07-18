@@ -61,6 +61,7 @@ socket.on("start-time", () => {
 socket.on("start-game", (numberOfUsers, usersNames) => {
   put = new Put();
   start = new Start(numberOfUsers, put, usersNames);
+  playerBoard.movingField.addMovingField();
   start.dealCards(start.playerNumber);
 
   start.createPlayers(numberOfUsers);
@@ -85,7 +86,7 @@ socket.on("start-game", (numberOfUsers, usersNames) => {
 
 socket.on("players-start-data", (playerInfo) => {
   const { colors, cards, allCards, usersNames } = playerInfo;
-
+  playerBoard.movingField.addMovingField();
   put = new Put();
   start = new Start(colors.length, put, usersNames);
   start.allCards = allCards;

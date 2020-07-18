@@ -1,7 +1,6 @@
 const socket = io(window.location.origin);
 
 const roomContainer = document.querySelector(".active-rooms");
-console.log("sdf");
 socket.on("room-created", (data) => {
   const roomElement = document.createElement("div");
   roomElement.dataset.roomname = data.roomName;
