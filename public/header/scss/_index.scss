@@ -1,0 +1,27 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: rgba(128, 128, 128, 0.288);
+
+  &__logo {
+    font-family: "Special Elite", cursive;
+    font-size: 3rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+  }
+
+  &__nav {
+    display: flex;
+    list-style-type: none;
+
+    .nav__item {
+      font-size: 1.5rem;
+      padding-left: 1rem;
+      cursor: pointer;
+    }
+  }
+}

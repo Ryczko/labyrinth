@@ -1,61 +1,54 @@
-.lobby-title {
-  text-transform: uppercase;
-  padding: 15px;
-  position: relative;
-
-  &::after {
-    content: "";
-    display: block;
-    width: 15%;
-    height: 2px;
-    position: absolute;
-    background-color: #5d6575;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+.rooms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.new-room {
-  select,
-  &__input,
-  &__btn {
-    font-size: 1.5rem;
-    padding: 5px;
-    text-align: center;
+.room {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  & > * {
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__label {
+    text-align: left;
+    font-size: 1.2rem;
+  }
+
+  &__label--bold {
+    font-weight: bold;
+  }
+
+  &__input {
+    border: none;
+    font-size: 1.1rem;
+    border-bottom: 0.1rem solid #000;
+    padding: 0.2rem;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__btn {
-    font-size: 1.5rem;
-  }
-}
-
-.active-rooms {
-  color: white;
-
-  &__room {
-    background-color: rgb(32, 40, 48);
-    font-size: 1.7rem;
-    border-radius: 10px;
-    display: flex;
-    padding: 15px 50px;
-    margin: 10px auto;
-    align-items: center;
-    justify-content: space-around;
-    width: 50%;
-    h4 {
-      font-size: 1.2rem;
-      font-weight: normal;
-    }
-    a {
-      margin-left: 15px;
-      display: block;
-      color: white;
-      text-decoration: none;
-      background-color: green;
-      padding: 10px;
-      border-radius: 5px;
-      text-transform: uppercase;
-      font-weight: bold;
-    }
+    background: #cacaca;
+    box-shadow: 0px 2px 4px #686868;
+    font-weight: bold;
+    padding: 0.5rem 0.5rem;
+    cursor: pointer;
+    border: none;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #000;
   }
 }
