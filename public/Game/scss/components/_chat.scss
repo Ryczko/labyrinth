@@ -1,11 +1,43 @@
 .chat {
 background-color: blanchedalmond;
-padding: 25px 0;
-height: 80%;
+padding: 25px 0 25px 40px;
+height: 100%;
+position: fixed;
+width: 30vw;
+top: 0;
+z-index: 100;
+left: calc(100% - 50px);
+transition: .6s;
+box-shadow: -2px 0 6px black;
+
+&.opened {
+    transform: translateX(calc( -100% + 50px));
+    .open-chat {
+        transform: rotate(180deg);
+    }
+}
+
+
+    .open-chat {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        font-size: 30px;
+        transform: translateY(-50%);
+        transition: .6s;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
 
     &__messages {
         margin: 0 auto;
-        height: 400px;
+        height: 80%;
         width: 90%;
         list-style-type: none;
         border: .2rem solid #000;

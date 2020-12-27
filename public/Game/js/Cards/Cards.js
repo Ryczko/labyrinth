@@ -4,12 +4,12 @@ export const createCards = (cards) => {
   const cardClass = "player__cards__card";
   const cardFrontClass = "player__cards__card__front";
   const cardBackClass = "player__cards__card__back";
-  let transformX = -5;
+  let transformY = -5;
 
   for (let i = 0; i < cards.length; i++) {
     const card = document.createElement("div");
     card.classList.add(cardClass);
-    card.style.transform += `translate(${transformX * i}px,-10px)`;
+    card.style.transform += `translateY(${transformY * i}px)`;
     const cardFront = document.createElement("div");
     cardFront.classList.add(cardFrontClass);
     const cardBack = document.createElement("div");
@@ -23,8 +23,8 @@ export const createCards = (cards) => {
       setTimeout(function () {
         card.dataset.item = cards[i].name;
         cardBack.style.backgroundImage = `url(Game/img/treasures/${cards[i].name}.png)`;
-        card.style.transform = `rotateY(180deg) translateX(${
-          -1 * transformX * i
+        card.style.transform = `rotateY(180deg) translateY(${
+           transformY * i 
         }px)`;
       }, 200);
     }

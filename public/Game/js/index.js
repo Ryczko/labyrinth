@@ -7,6 +7,13 @@ import { startCounting } from "./Timer/timer.js";
 
 const socket = io(window.location.origin);
 
+const openChatButton = document.querySelector('.open-chat');
+const chat = document.querySelector('.chat');
+
+openChatButton.addEventListener('click', ()=>{
+  chat.classList.toggle('opened');
+})
+
 const chatForm = document.querySelector(".chat__form"),
   messageInput = document.querySelector(".chat__form__input");
 
