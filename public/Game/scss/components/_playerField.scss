@@ -1,23 +1,18 @@
 .player {
-  position: relative;
-  background-color: rgb(173, 173, 173);
-  padding: 20px 0;
-  display: flex;
-  align-self: center;
-
-  @media (max-width: 1170px) {
-    flex-direction: column;
-  }
+  position: absolute;
+  width: 80px;
+  height: 500px;
+  right: 100%;
 
   &__moving-field {
     position: relative;
-    display: flex;
-    margin-left: 30px;
 
     &__field {
+      margin: 0 auto 15px;
       transition: 0.5s;
       flex-basis: $road-field-size;
       height: $road-field-size;
+      background-color: #575757;
       border: 1px solid black;
       transform: rotate(0deg);
       width: $road-field-size;
@@ -25,6 +20,7 @@
     }
     &__arrow {
       position: absolute;
+      left: 0;
       top: 0;
       cursor: pointer;
       background-color: rgb(207, 207, 207);
@@ -36,13 +32,14 @@
   }
 
   &__cards {
-    position: absolute;
-    right: 20px;
+    position: relative;
+    width: 100%;
+    height: 220px;
 
     &__card {
       position: absolute;
       right: 0;
-      top: 1.1vh;
+      bottom: 0;
 
       width: $road-field-size;
       height: $road-field-size;
@@ -66,20 +63,14 @@
       }
       &__back {
         background-color: #dbbe8e;
-        transform: rotateY(180deg) translate(0, -10px);
+        transform: rotateY(180deg);
       }
     }
   }
 
   &__leave {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    margin-left: 20px;
-    margin-top: 5px;
     & > button {
-      font-size: 1.7rem;
+      font-size: 1.2rem;
       padding: 0.5rem;
       background: #dbbe8e;
       cursor: pointer;

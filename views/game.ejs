@@ -1,129 +1,135 @@
 <%- include('./includes/head.ejs')%>
-<script type="module" defer src="/Game/js/index.js"></script>
-</head>
+    <script type="module" defer src="/Game/js/index.js"></script>
+    </head>
 
-<body>
-    <div class="game">
-        <div class="board-wrapper">
-            <div class="arrows">
-                <div class="arrows-top">
-                    <i class="board-arrows icon-arrow-down" data-column="1" data-row="0"></i>
-                    <i class="board-arrows icon-arrow-down" data-column="3" data-row="0"></i>
-                    <i class="board-arrows icon-arrow-down" data-column="5" data-row="0"></i>
-                </div>
+    <body>
 
-                <div class="arrows-right">
-                    <i class="board-arrows icon-arrow-left" data-column="6" data-row="1"></i>
-                    <i class="board-arrows icon-arrow-left" data-column="6" data-row="3"></i>
-                    <i class="board-arrows icon-arrow-left" data-column="6" data-row="5"></i>
-                </div>
 
-                <div class="arrows-bottom">
-                    <i class="board-arrows icon-arrow-up" data-column="1" data-row="6"></i>
-                    <i class="board-arrows icon-arrow-up" data-column="3" data-row="6"></i>
-                    <i class="board-arrows icon-arrow-up" data-column="5" data-row="6"></i>
-                </div>
+        <div class="game">
+            <div class="board-wrapper">
+                <div class="info-box">Info box (It's turn of Player2) </div>
+                <div class="player">
+                    <div class="player__moving-field">
+                        <div class="player__moving-field__field"></div>
+                        <div class="player__moving-field__arrow icon-arrows-cw hide"></div>
+                    </div>
 
-                <div class="arrows-left">
-                    <i class="board-arrows icon-arrow-right" data-column="0" data-row="1"></i>
-                    <i class="board-arrows icon-arrow-right" data-column="0" data-row="3"></i>
-                    <i class="board-arrows icon-arrow-right" data-column="0" data-row="5"></i>
-                </div>
-            </div>
-            <div class="board">
-                <div class="board__road-field" data-static data-player data-entry='right,bottom'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='apple' data-entry='right,bottom,left'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='axe' data-entry='right,bottom,left'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-player data-entry='bottom,left'></div>
+                    <div class="player__leave">
+                        <button id="button-leave">Leave move</button>
+                    </div>
+                    <div class="player__timer" style="display: none;">
+                        30
+                    </div>
 
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
+                    <div class="player__cards">
 
-                <div class="board__road-field" data-static data-item='bow' data-entry='top,right,bottom'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='backpack' data-entry='top,right,bottom'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='black-ax' data-entry='right,bottom,left'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='candy' data-entry='top,bottom,left'></div>
-
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-
-                <div class="board__road-field" data-static data-item='book' data-entry='top,right,bottom'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='blue-gem' data-entry='top,right,left'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='blue-wand' data-entry='top,bottom,left'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='cookie' data-entry='top,bottom,left'></div>
-
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field"></div>
-
-                <div class="board__road-field" data-static data-player data-entry='top,right'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='diamond' data-entry='top,right,left'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-item='elixir' data-entry='top,right,left'></div>
-                <div class="board__road-field"></div>
-                <div class="board__road-field" data-static data-player data-entry='top,left'></div>
-            </div>
-        </div>
-
-        <div class="player-wrapper">
-            <div class="player">
-                <div class="player__moving-field">
-                    <div class="player__moving-field__field"></div>
-                    <div class="player__moving-field__arrow icon-arrows-cw hide"></div>
-                </div>
-
-                <div class="player__leave">
-                    <button id="button-leave">Leave move</button>
-                </div>
-                <div class="player__timer" style="display: none;">
-                    30
-                </div>
-
-                <div class="player__cards">
+                    </div>
 
                 </div>
-            </div>
 
-            <div class="chat">
-                <ul class="chat__messages">
+                <div class="arrows">
+                    <div class="arrows-top">
+                        <i class="board-arrows icon-arrow-down" data-column="1" data-row="0"></i>
+                        <i class="board-arrows icon-arrow-down" data-column="3" data-row="0"></i>
+                        <i class="board-arrows icon-arrow-down" data-column="5" data-row="0"></i>
+                    </div>
 
-                </ul>
-                <form class="chat__form">
-                    <input type="text" placeholder="enter message" class="chat__form__input">
-                    <button class="chat__form__button" type="submit">Send</button>
-                </form>
+                    <div class="arrows-right">
+                        <i class="board-arrows icon-arrow-left" data-column="6" data-row="1"></i>
+                        <i class="board-arrows icon-arrow-left" data-column="6" data-row="3"></i>
+                        <i class="board-arrows icon-arrow-left" data-column="6" data-row="5"></i>
+                    </div>
+
+                    <div class="arrows-bottom">
+                        <i class="board-arrows icon-arrow-up" data-column="1" data-row="6"></i>
+                        <i class="board-arrows icon-arrow-up" data-column="3" data-row="6"></i>
+                        <i class="board-arrows icon-arrow-up" data-column="5" data-row="6"></i>
+                    </div>
+
+                    <div class="arrows-left">
+                        <i class="board-arrows icon-arrow-right" data-column="0" data-row="1"></i>
+                        <i class="board-arrows icon-arrow-right" data-column="0" data-row="3"></i>
+                        <i class="board-arrows icon-arrow-right" data-column="0" data-row="5"></i>
+                    </div>
+                </div>
+                <div class="board">
+                    <div class="board__road-field" data-static data-player data-entry='right,bottom'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='apple' data-entry='right,bottom,left'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='axe' data-entry='right,bottom,left'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-player data-entry='bottom,left'></div>
+
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+
+                    <div class="board__road-field" data-static data-item='bow' data-entry='top,right,bottom'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='backpack' data-entry='top,right,bottom'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='black-ax' data-entry='right,bottom,left'>
+                    </div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='candy' data-entry='top,bottom,left'></div>
+
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+
+                    <div class="board__road-field" data-static data-item='book' data-entry='top,right,bottom'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='blue-gem' data-entry='top,right,left'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='blue-wand' data-entry='top,bottom,left'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='cookie' data-entry='top,bottom,left'></div>
+
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field"></div>
+
+                    <div class="board__road-field" data-static data-player data-entry='top,right'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='diamond' data-entry='top,right,left'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-item='elixir' data-entry='top,right,left'></div>
+                    <div class="board__road-field"></div>
+                    <div class="board__road-field" data-static data-player data-entry='top,left'></div>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <script>
-        const numberOfPlayers="<%=numberOfPlayers%>";
-        const roomName="<%=roomName%>";
-    </script>
-</body>
 
-</html>
+        <div class="chat">
+            <button class="open-chat"><i class=" icon-left"></i></button>
+            <ul class="chat__messages">
+
+            </ul>
+            <form class="chat__form">
+                <input type="text" placeholder="enter message" class="chat__form__input">
+                <button class="chat__form__button" type="submit">Send</button>
+            </form>
+        </div>
+
+
+
+        <script>
+            const numberOfPlayers = "<%=numberOfPlayers%>";
+            const roomName = "<%=roomName%>";
+        </script>
+    </body>
+
+    </html>

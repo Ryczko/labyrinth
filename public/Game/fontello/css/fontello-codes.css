@@ -1,5 +1,6 @@
 
 .icon-arrows-cw:before { content: '\e800'; } /* '' */
+.icon-left:before { content: '\e801'; } /* '' */
 .icon-arrow-down:before { content: '\e810'; } /* '' */
 .icon-arrow-right:before { content: '\e811'; } /* '' */
 .icon-arrow-left:before { content: '\e812'; } /* '' */
