@@ -4,7 +4,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  background-color: rgba(128, 128, 128, 0.288);
+  z-index: 1000;
+  position: relative;
+  background-color: #DBDBDB;
 
   &__logo {
     font-family: "Special Elite", cursive;
